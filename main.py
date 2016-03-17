@@ -33,7 +33,7 @@ class AggApp(App):
 
     def build(self):
         self.app = Agg()
-        #self.listener.start_listening()
+        self.listener.start_listening()
         return self.app
 
     def run(self, *args, **kwargs):
@@ -71,6 +71,14 @@ class AggApp(App):
             Logger.info('agg-man: aggregator server "{}" was removed'.format(element))
 
             self.app.set_active_aggregator(None)
+
+    def on_pause(self):
+        #self.listener.stop_listening(block=True)
+        return True
+
+    def on_resume(self):
+        #self.listener.start_listening()
+        pass
 
 if __name__ == "__main__":
 

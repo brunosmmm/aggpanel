@@ -17,18 +17,28 @@ class AndroidListener(PythonJavaClass):
         self.cb_found = service_found_cb
         self.cb_removed = service_removed_cb
 
+        self.is_stopped = True
+        self.startstop_failed = False
+
     def start_listening(self):
         self.nsd_mgr.discoverServices('_http._tcp', self.NsdManager.PROTOCOL_DNS_SD, self)
 
-    def stop_listening(self):
+    def stop_listening(self, block=False):
         self.nsd_mgr.stopServiceDiscovery(self)
+
+        if block:
+            while self.is_stopped == False:
+                if self.startstop_failed:
+                    break
 
     @java_method('(Ljava/lang/String;I)V')
     def onStopDiscoveryFailed(self, service_type, error_code):
+        self.startstop_failed = True
         Logger.error('android-listen: failed to stop discovery of service type "{}" with error code: {}'.format(service_type, error_code))
 
     @java_method('(Ljava/lang/String;I)V')
     def onStartDiscoveryFailed(self, service_type, error_code):
+        self.startstop_failed = True
         Logger.error('android-listen: failed to start discovery of service type "{}" with error code: {}'.format(service_type, error_code))
 
     @java_method('(Landroid/net/nsd/NsdServiceInfo;)V')
@@ -45,10 +55,14 @@ class AndroidListener(PythonJavaClass):
 
     @java_method('(Ljava/lang/String;)V')
     def onDiscoveryStopped(self, service_type):
+        self.is_stopped = True
+        self.startstop_failed = False
         Logger.info('android-listen: discovery stopped for service type "{}"'.format(service_type))
 
     @java_method('(Ljava/lang/String;)V')
     def onDiscoveryStarted(self, service_type):
+        self.is_stopped = False
+        self.startstop_failed = False
         Logger.info('android-listen: discovery started for service type "{}"'.format(service_type))
 
     @java_method('(Landroid/net/nsd/NsdServiceInfo;I)V')
