@@ -40,29 +40,29 @@ class AndroidListener(PythonJavaClass):
 
     @java_method('(Landroid/net/nsd/NsdServiceInfo;)V')
     def onServiceFound(self, service):
-        Logger.debug('android-listen: discovered service, resolving...')
+        Logger.info('android-listen: discovered service, resolving...')
         self.nsd_mgr.resolveService(service, self)
 
     @java_method('(Ljava/lang/String;)V')
     def onDiscoveryStopped(self, service_type):
-        Logger.debug('android-listen: discovery stopped for service type "{}"'.format(service_type))
+        Logger.info('android-listen: discovery stopped for service type "{}"'.format(service_type))
 
     @java_method('(Ljava/lang/String;)V')
     def onDiscoveryStarted(self, service_type):
-        Logger.debug('android-listen: discovery started for service type "{}"'.format(service_type))
+        Logger.info('android-listen: discovery started for service type "{}"'.format(service_type))
 
     @java_method('(Landroid/net/nsd/NsdServiceInfo;I)V')
     def onResolveFailed(self, service_info, error_code):
-        Logger.debug('android-listen: resolve failed for "{}" with error code {}'.format(service_info.toString(), error_code))
+        Logger.info('android-listen: resolve failed for "{}" with error code {}'.format(service_info.toString(), error_code))
 
     @java_method('(Landroid/net/nsd/NsdServiceInfo;)V')
     def onServiceResolved(self, service_info):
         Logger.info('android-listen: service resolved: {}'.format(service_info.toString()))
 
-        #annoying escaped characters!
+        #annoying escaped characters and annoying forward-slash address
         #dont pass attributes for now
         if self.cb_found:
-            self.cb_found(address=service_info.getHost().toString(),
+            self.cb_found(address=service_info.getHost().toString()[1::],
                           port=service_info.getPort(),
                           name=service_info.getServiceName(),
                           attr=[])
