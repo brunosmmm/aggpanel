@@ -75,7 +75,7 @@ android.permissions = INTERNET,ACCESS_WIFI_STATE,CHANGE_WIFI_MULTICAST_STATE
 #android.api = 19
 
 # (int) Minimum API required
-#android.minapi = 9
+android.minapi = 13
 
 # (int) Android SDK version to use
 #android.sdk = 20
