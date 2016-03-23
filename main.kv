@@ -1,0 +1,100 @@
+
+<RootWidget>:
+    TabbedPanel:
+        do_default_tab: False
+        
+        TabbedPanelItem:
+            text: 'Room 1'
+            FloatLayout:
+                canvas.before:
+                    Color:
+                        rgb: (1.,1.,1.)
+                width: 720
+                height: 480
+                BoxLayout:
+                    size_hint: 0.2, 1
+                    pos_hint: {'x':.775, 'y':0}
+                    orientation: 'vertical'
+                    GridLayout:
+                        cols: 3
+                        col_default_width: 50
+                        row_default_height: 40
+                        Image:
+                            source: 'img/tv_red.png'
+                        Widget:
+                        KeyPower:
+                            id: tvpower
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_POWER'
+                            #execute_action: 'watchtv'
+                        KeyBack:
+                            id: tvback
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_BACK'
+                        KeyUp:
+                            id: tvup
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_UP'
+                        KeyHome:
+                            id: tvhome
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_HOME'
+                        KeyLeft:
+                            id: tvleft
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_LEFT'
+                        KeyOK:
+                            id: tvok
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_OK'
+                        KeyRight:
+                            id: tvright
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_RIGHT'
+                        KeyRefreshBack:
+                            id: tvexit
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_EXIT'
+                        KeyDown:
+                            id: tvdown
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_DOWN'
+                        KeyMenu:
+                            id: tvmenu
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_MENU'
+                        KeyRewind:
+                            id: tvrew
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_REWIND'
+                        KeyPlay:
+                            id: tvplay
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_PLAY'
+                        KeyFastForward:
+                            id: tvff
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_FASTFORWARD'
+                        KeyVolUp:
+                            id: tvvolup
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_VOLUMEUP'
+                        KeyVolDn:
+                            id: tvvoldn
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_VOLUMEDOWN'
+                        KeyMute:
+                            id: tvmute
+                            remote_name: 'rokuTV'
+                            key_name: 'KEY_MUTE'
+
+        
+        TabbedPanelItem:
+            text: 'Room 2'
+            FloatLayout:
+                GridLayout:
+    				cols: 2
+        
+        TabbedPanelItem:
+            text: 'Room 3'
+            FloatLayout:
