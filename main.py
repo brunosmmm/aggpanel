@@ -1,3 +1,9 @@
+import kivy
+kivy.require('1.9.0')
+from kivy.config import Config
+Config.set('graphics', 'width', '1280')
+Config.set('graphics', 'height', '720')
+Config.set('graphics', 'resizable', '0')
 from kivy.uix.button import Button
 from kivy.properties import ObjectProperty
 from kivy.logger import Logger
@@ -15,6 +21,7 @@ import re
 from userman import UserConfigManager
 from collections import deque
 from kivy.clock import Clock
+from kivy.core.window import Window
 
 IMAGE_PATH = 'img'
 KEY_CLASS_IMAGES = { 'KeyDown'        : {'img': 'down',
@@ -91,18 +98,15 @@ class RemoteKey(Button):
         return tuple(float(int(h[i:i+2], 16))/255.0 for i in (0, 2 ,4))
 
     def set_bgcolor(self, color):
-        #Logger.info('OGULUMMMICA: {}'.format(self.ids))
-        #img = Image(self.state_image, mipmap=True, keep_ratio=True, allow_stretch=False)
-        #tex = img.texture
-        #tex.min_filter = 'linear_mipmap_linear'
-        #image_size = [self.size[0], img.width/img.height * self.size[0]]
         img = self.ids['btnimg']
         tex = self.ids['btnimg'].texture
+        img_size = [self.size[0], self.size[0]]
+        img_pos = [self.pos[0], self.pos[1]+ (self.size[1]/2 - img_size[1]/2)]
         with self.canvas:
             Color(rgb=color)
             Rectangle(size=self.size, pos=self.pos)
             Color(rgb=(1.,1.,1.))
-            Rectangle(texture=tex, size=self.size, pos=self.pos)
+            Rectangle(texture=tex, size=img_size, pos=img_pos)
 
     def canvas_ready(self):
         return self.x_pos_set and self.y_pos_set and self.w_set and self.h_set
@@ -244,6 +248,7 @@ class MainApp(App):
         return self.app
 
     def run(self, *args, **kwargs):
+        Window.size = (1280, 720)
         super(MainApp, self).run(*args, **kwargs)
         self.listener.stop_listening()
 
