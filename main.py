@@ -1,10 +1,9 @@
 import kivy
-kivy.require('1.9.0')
+kivy.require('1.9.1')
 from kivy.config import Config
 Config.set('graphics', 'width', '1280')
 Config.set('graphics', 'height', '720')
 Config.set('graphics', 'resizable', '0')
-from kivy.uix.button import Button
 from kivy.properties import ObjectProperty
 from kivy.logger import Logger
 from kivy.uix.tabbedpanel import TabbedPanel
@@ -13,15 +12,13 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
 from kivy.graphics import Color, Rectangle
 import kivy.uix.effectwidget as ew
-from kivy.uix.widget import Widget
-from kivy.core.image import Image
 from jnius import JavaException, autoclass
 from agg.manager import AggManager
-import re
 from userman import UserConfigManager
 from collections import deque
 from kivy.clock import Clock
 from kivy.core.window import Window
+from ui.remotekey import RemoteKey
 
 IMAGE_PATH = 'img'
 KEY_CLASS_IMAGES = { 'KeyDown'        : {'img': 'down',
@@ -78,90 +75,15 @@ def hex_color_to_rbg(h):
     ret = tuple(float(int(h[i:i+2], 16))/255.0 for i in (0, 2 ,4))
     return ret
 
-#wtf, kivy!!!
-class RemoteKey(Button):
-
-    bgup = ObjectProperty([0.,0.,0.])
-    bgdown = ObjectProperty([0.,0.,0.])
-    remote_name = ObjectProperty('')
-    key_name = ObjectProperty('')
-    execute_action = ObjectProperty('')
-
-    def find_root(self):
-        root = self.parent
-        while isinstance(root, RootWidget) == False:
-            root = root.parent
-
-        return root
-
-    def hextorgb(self, h):
-        return tuple(float(int(h[i:i+2], 16))/255.0 for i in (0, 2 ,4))
-
-    def set_bgcolor(self, color):
-        img = self.ids['btnimg']
-        tex = self.ids['btnimg'].texture
-        img_size = [self.size[0], self.size[0]]
-        img_pos = [self.pos[0], self.pos[1]+ (self.size[1]/2 - img_size[1]/2)]
-        with self.canvas:
-            Color(rgb=color)
-            Rectangle(size=self.size, pos=self.pos)
-            Color(rgb=(1.,1.,1.))
-            Rectangle(texture=tex, size=img_size, pos=img_pos)
-
-    def canvas_ready(self):
-        return self.x_pos_set and self.y_pos_set and self.w_set and self.h_set
-
-    def __init__(self, **kwargs):
-
-        self.x_pos_set = False
-        self.y_pos_set = False
-        self.w_set = False
-        self.h_set = False
-        self.canvas_set = False
-
-        super(RemoteKey, self).__init__(**kwargs)
-
-    # def __setattr__(self, name, value):
-
-    #     #if name == 'bgup' and self.canvas_ready():
-    #     #    self.set_bgcolor(hex_color_to_rbg(value))
-    #     #if name == 'bgdown' and self.canvas_ready():
-    #     #    self.set_bgcolor(hex_color_to_rbg(value))
-
-    #     if name == 'x':
-    #         self.x_pos_set = True
-
-    #     if name == 'y':
-    #         self.y_pos_set = True
-
-    #     if name == 'height':
-    #         self.h_set = True
-
-    #     if name == 'width':
-    #         self.w_set = True
-
-    #     super(RemoteKey, self).__setattr__(name, value)
-
-    def on_press(self, **kwargs):
-        self.set_bgcolor(hex_color_to_rbg(self.bgdown))
-        #execute action has priority over direct remote key access
-        if self.execute_action != '':
-            self.find_root().execute_action(self.execute_action)
-        else:
-            self.find_root().key_press(self.remote_name, self.key_name)
-
-    def on_release(self, **kwargs):
-        self.set_bgcolor(hex_color_to_rbg(self.bgup))
-
-
 #button class template
 def make_button_class(class_name, img_up, img_down, img_path, color_down='000000', color_up='000000'):
     template = """
 <{cls}@RemoteKey>:
     canvas:
+        Clear
         Color:
             rgb: self.hextorgb('{bgup}')
-        Rectangle:
+        RoundedRectangle:
             size: self.size
             pos: self.pos
     bgup: '{bgup}'
@@ -194,6 +116,7 @@ class RootWidget(FloatLayout):
 
         #register action types
         self.userman.register_action_hook('send_remote_key', self._action_key_press)
+        self.userman.register_action_hook('wait', self._insert_wait)
         Clock.schedule_interval(self._check_action_queue, 0.1)
 
     def _queue_action(self, action_cb, **kwargs):
@@ -204,6 +127,13 @@ class RootWidget(FloatLayout):
             return
 
         self._queue_action(self._key_press, **key_data)
+
+    def _insert_wait(self, wait_data):
+        if 'amount' not in wait_data:
+            return
+
+        for i in range(wait_data['amount']):
+            self._queue_action(None)
 
     def _check_action_queue(self, dt):
         if len(self.act_queue) > 0:
@@ -223,16 +153,17 @@ class RootWidget(FloatLayout):
     def execute_action(self, action_name):
         self.userman.execute_action(action_name)
 
-    def key_press(self, remote_name, key_name):
+    def key_press(self, remote_node, remote_name, key_name):
         self._queue_action(self._key_press,
+                           remote_node=remote_node,
                            remote_name=remote_name,
                            key_name=key_name)
 
-    def _key_press(self, remote_name, key_name):
-        Logger.info('KEYPRESS: sending "{}" to remote "{}"'.format(key_name, remote_name))
+    def _key_press(self, remote_node, remote_name, key_name):
+        Logger.info('KEYPRESS: sending "{}" to remote "{}" at node "{}"'.format(key_name, remote_name, remote_node))
         if self.active_aggregator != None:
-            if remote_name != '' and key_name != '':
-                self.active_aggregator.key_press(remote_name, key_name)
+            if remote_name != '' and key_name != '' and remote_node != '':
+                self.active_aggregator.key_press(remote_node, remote_name, key_name)
 
 class MainApp(App):
 

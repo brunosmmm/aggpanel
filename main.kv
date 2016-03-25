@@ -1,7 +1,5 @@
 
 <RootWidget>:
-    #width: 1280
-    #height: 720
     TabbedPanel:
         do_default_tab: False
         
@@ -11,12 +9,8 @@
                 canvas.before:
                     Color:
                         rgb: (1.,1.,1.)
-                #width: 1280
-                #height: 720
                 BoxLayout:
                     size_hint: 0.2, 1
-                    #anchor_x: 'right'
-                    #anchor_y: 'bottom'
                     pos_hint: {'x':1-(self.width/self.parent.width), 'y':0}
                     orientation: 'vertical'
                     GridLayout:
@@ -25,6 +19,7 @@
                         spacing: 5
                         #col_default_width: 60
                         #row_default_height: 60
+                        remote_node: 'silicon'
                         Image:
                             source: 'img/tv_red.png'
                         Widget:
