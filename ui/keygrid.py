@@ -4,6 +4,13 @@ from kivy.logger import Logger
 
 class KeyGrid(GridLayout):
 
+    def inhibit_children(self, state):
+        for child_id in self.children:
+            try:
+                child_id.inhibit = state
+            except Exception:
+                pass
+
     def get_key_button(self, button_id):
         if button_id in self.ids:
             return self.ids[button_id]

@@ -57,6 +57,8 @@ class RemoteKey(Button):
         self.canvas_set = False
         self.toggle_state = False
 
+        self.inhibit = True
+
         super(RemoteKey, self).__init__(**kwargs)
 
     def __setattr__(self, attr, value):
@@ -95,6 +97,9 @@ class RemoteKey(Button):
 
     def on_disabled(self, *args, **kwargs):
         super(RemoteKey, self).on_disabled(*args, **kwargs)
+
+        if self.inhibit == True:
+            return
 
         if args[1] == True:
             self.set_bgcolor(self.hextorgb(self.bgdis))

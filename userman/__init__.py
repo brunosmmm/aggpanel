@@ -93,17 +93,22 @@ class UserConfigManager(object):
 
                 #execute (call)
                 self.action_hooks[act_type](act)
+    def reset_button_scheme(self, root_widget):
+        #reset to default
+        for group_name in KEY_GROUP_LIST:
+            root_widget.ids[group_name].set_all_child_property('disabled', True)
+            root_widget.ids[group_name].set_all_child_property('remote_node', '')
+            root_widget.ids[group_name].set_all_child_property('remote_name', '')
+            root_widget.ids[group_name].set_all_child_property('key_name', '')
+            root_widget.ids[group_name].inhibit_children(False)
+        #enable selector
+        root_widget.ids['ctrlscheme_group'].inhibit_children(False)
 
     def apply_button_scheme(self, scheme_name, root_widget):
         if scheme_name not in self.button_schemes:
             Logger.warning('USERCFGMAN: invalid scheme "{}" requested'.format(scheme_name))
 
-        #reset to default
-        for group_name in KEY_GROUP_LIST:
-            root_widget.ids[group_name].set_all_child_property('disabled', False)
-            root_widget.ids[group_name].set_all_child_property('remote_node', '')
-            root_widget.ids[group_name].set_all_child_property('remote_name', '')
-            root_widget.ids[group_name].set_all_child_property('key_name', '')
+        self.reset_button_scheme(root_widget)
 
         for group_name, actions in self.button_schemes[scheme_name].get_group_scheme().iteritems():
             if group_name not in root_widget.ids:
