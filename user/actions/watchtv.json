@@ -4,12 +4,14 @@
     "actions" : [
         {
             "send_remote_key" : {
+                "remote_node" : "silicon",
                 "remote_name" : "rokuTV",
                 "key_name" : "KEY_POWER"
             }
         },
         {
             "send_remote_key" : {
+                "remote_node" : "carbon",
                 "remote_name" : "RAV514",
                 "key_name" : "KEY_AUDIO_1"
             }

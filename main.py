@@ -19,64 +19,19 @@ from collections import deque
 from kivy.clock import Clock
 from kivy.core.window import Window
 from ui.remotekey import RemoteKey
+from ui.keygrid import KeyGrid
+import json
 
 IMAGE_PATH = 'img'
-KEY_CLASS_IMAGES = { 'KeyDown'        : {'img': 'down',
-                                         'color_up' : 'AA7E39',
-                                         'color_down' : 'D4AB6A'},
-                     'KeyUp'          : {'img': 'up',
-                                         'color_up' : 'AA7E39',
-                                         'color_down' : 'D4AB6A'},
-                     'KeyLeft'        : {'img': 'left',
-                                         'color_up' : 'AA7E39',
-                                         'color_down' : 'D4AB6A'},
-                     'KeyRight'       : {'img': 'right',
-                                         'color_up' : 'AA7E39',
-                                         'color_down' : 'D4AB6A'},
-                     'KeyPower'       : {'img': 'power',
-                                         'color_up' : '2B4A6F',
-                                         'color_down' : '4B688B'},
-                     'KeyFastForward' : {'img': 'ff',
-                                         'color_up' : '2B823A',
-                                         'color_down' : '51A35F'},
-                     'KeyRewind'      : {'img': 'rew',
-                                         'color_up' : '2B823A',
-                                         'color_down' : '51A35F'},
-                     'KeyBack'        : {'img': 'back',
-                                         'color_up' : '2B4A6F',
-                                         'color_down' : '4B688B'},
-                     'KeyPlay'        : {'img': 'play',
-                                         'color_up' : '2B823A',
-                                         'color_down' : '51A35F'},
-                     'KeyHome'        : {'img': 'home',
-                                         'color_up' : '2B4A6F',
-                                         'color_down' : '4B688B'},
-                     'KeyVolUp'        : {'img': 'speaker-3',
-                                         'color_up' : 'AA4139',
-                                          'color_down' : 'D4726A'},
-                     'KeyVolDn'        : {'img': 'speaker-2',
-                                         'color_up' : 'AA4139',
-                                          'color_down' : 'D4726A'},
-                     'KeyMute'        : {'img': 'speaker-4',
-                                         'color_up' : 'AA4139',
-                                         'color_down' : 'D4726A'},
-                     'KeyMenu'        : {'img': 'menu',
-                                         'color_up' : '2B4A6F',
-                                         'color_down' : '4B688B'},
-                     'KeyOK'       : {'img': 'check',
-                                         'color_up' : 'AA7E39',
-                                         'color_down' : 'D4AB6A'},
-                     'KeyRefreshBack'       : {'img': 'refresh',
-                                         'color_up' : '2B4A6F',
-                                         'color_down' : '4B688B'}
-                     }
+with open('ui/config/keys.json', 'r') as f:
+    KEY_CLASS_IMAGES = json.load(f)
 
 def hex_color_to_rbg(h):
     ret = tuple(float(int(h[i:i+2], 16))/255.0 for i in (0, 2 ,4))
     return ret
 
 #button class template
-def make_button_class(class_name, img_up, img_down, img_path, color_down='000000', color_up='000000'):
+def make_button_class(class_name, img_up, img_down, img_path, color_down='000000', color_up='000000', color_dis='000000'):
     template = """
 <{cls}@RemoteKey>:
     canvas:
@@ -88,7 +43,8 @@ def make_button_class(class_name, img_up, img_down, img_path, color_down='000000
             pos: self.pos
     bgup: '{bgup}'
     bgdown: '{bgdn}'
-    background_normal: 'img/white.png'
+    bgdis: '{bgdis}'
+    #background_normal: 'img/white.png'
     #background_down: ''#''
     border: 0,0,0,0
     Image:
@@ -98,14 +54,13 @@ def make_button_class(class_name, img_up, img_down, img_path, color_down='000000
         x: self.parent.x
         size: self.parent.size
         mipmap: True
-""".format(cls=class_name, bgup=color_up, bgdn=color_down,
-           btnimg='{}/{}.png'.format(img_path, img_up))
-           #'{}/{}.png'.format(img_path, img_down))
+""".format(cls=class_name, bgup=color_up, bgdn=color_down, bgdis=color_dis,
+           btnimg=('{}/{}.png'.format(img_path, img_up) if img_up != '' else ''))
     Builder.load_string(template)
 
 for key_class, key_prop in KEY_CLASS_IMAGES.iteritems():
     make_button_class(key_class, key_prop['img'], key_prop['img'], IMAGE_PATH,
-                      key_prop['color_down'], key_prop['color_up'])
+                      key_prop['color_down'], key_prop['color_up'], key_prop['color_dis'])
 
 class RootWidget(FloatLayout):
     def __init__(self, *args, **kwargs):
@@ -160,10 +115,13 @@ class RootWidget(FloatLayout):
                            key_name=key_name)
 
     def _key_press(self, remote_node, remote_name, key_name):
-        Logger.info('KEYPRESS: sending "{}" to remote "{}" at node "{}"'.format(key_name, remote_name, remote_node))
         if self.active_aggregator != None:
             if remote_name != '' and key_name != '' and remote_node != '':
+                Logger.info('KEYPRESS: sending "{}" to remote "{}" at node "{}"'.format(key_name, remote_name, remote_node))
                 self.active_aggregator.key_press(remote_node, remote_name, key_name)
+
+    def activate_button_configuration(self, scheme_name):
+        self.userman.apply_button_scheme(scheme_name, self)
 
 class MainApp(App):
 
