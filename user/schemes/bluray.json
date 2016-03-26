@@ -5,6 +5,7 @@
     {
     "numericctrl_group" : {
         "global" : {
+            "disabled" : false,
             "remote_node": "carbon",
             "remote_name": "AK59"
         },
@@ -42,6 +43,7 @@
 
     "volctrl_group" : {
         "global" : {
+            "disabled" : false,
             "remote_node" : "carbon",
             "remote_name" : "RAV514"
         },
@@ -63,6 +65,7 @@
     {
         "global" :
         {
+            "disabled" : false,
             "remote_node" : "carbon",
             "remote_name" : "AK59"
         },

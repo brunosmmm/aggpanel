@@ -11,6 +11,7 @@
 
     "volctrl_group" : {
         "global" : {
+            "disabled" :  false,
             "remote_node" : "silicon",
             "remote_name" : "rokuTV"
         },
@@ -32,6 +33,7 @@
     {
         "global" :
         {
+            "disabled" : false,
             "remote_node" : "silicon",
             "remote_name" : "rokuTV"
         },

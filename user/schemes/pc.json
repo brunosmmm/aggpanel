@@ -11,6 +11,7 @@
 
     "volctrl_group" : {
         "global" : {
+            "disabled" : false,
             "remote_node" : "carbon",
             "remote_name" : "RAV514"
         },
