@@ -127,11 +127,11 @@ class RootWidget(FloatLayout):
                            remote_name=remote_name,
                            key_name=key_name)
 
-    def _key_press(self, remote_node, remote_name, key_name):
+    def _key_press(self, remote_node, remote_name, key_name, repeat_count=0):
         if self.active_aggregator != None:
             if remote_name != '' and key_name != '' and remote_node != '':
                 Logger.info('KEYPRESS: sending "{}" to remote "{}" at node "{}"'.format(key_name, remote_name, remote_node))
-                self.active_aggregator.key_press(remote_node, remote_name, key_name)
+                self.active_aggregator.key_press(remote_node, remote_name, key_name, repeat_count)
 
     def _rpt_key_press(self, remote_node, remote_name, key_name, rpt_count=0):
         if self.active_aggregator != None:
