@@ -25,30 +25,35 @@ class AggManager(object):
     def refresh_driver_list(self):
         self.server_drv_list = self.client.call('list_drivers')
 
-    def key_press(self, remote_node, remote_name, key_name):
+    def key_press(self, remote_node, remote_name, key_name, repeat_count=0):
         drv_list = self.client.call('list_drivers')
 
         if 'lircd-{}'.format(remote_node) not in drv_list:
             return
 
-        self.client.call('module_call_method',
-                         'lircd-{}'.format(remote_node),
-                         'send_remote_key',
-                         remote_name=remote_name,
-                         key_name=key_name)
+        try:
+            self.client.call('module_call_method',
+                             'lircd-{}'.format(remote_node),
+                             'send_remote_key',
+                             remote_name=remote_name,
+                             key_name=key_name,
+                             repeat_count=repeat_count)
+        except:
+            Logger.warning('key_press command failed')
 
-    def start_key_press(self, remote_node, remote_name, key_name, rpt_count):
+    def start_key_press(self, remote_node, remote_name, key_name):
         drv_list = self.client.call('list_drivers')
 
         if 'lircd-{}'.format(remote_node) not in drv_list:
             return
-
-        self.client.call('module_call_method',
-                         'lircd-{}'.format(remote_node),
-                         'start_key_press',
-                         remote_name=remote_name,
-                         key_name=key_name,
-                         repeat_count=str(rpt_count))
+        try:
+            self.client.call('module_call_method',
+                             'lircd-{}'.format(remote_node),
+                             'start_key_press',
+                             remote_name=remote_name,
+                             key_name=key_name)
+        except:
+            Logger.warning('start_key_press command failed')
 
     @staticmethod
     def get_element_from_name(name):
