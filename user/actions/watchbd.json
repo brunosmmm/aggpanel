@@ -1,0 +1,13 @@
+{
+    "name" : "watchbd",
+    "description" : "Watch BD/DVD",
+    "actions" : [
+        {
+            "send_remote_key": {
+                "remote_node": "carbon",
+                "remote_name": "AK59",
+                "key_name": "KEY_POWER"
+            }
+        }
+    ]
+}

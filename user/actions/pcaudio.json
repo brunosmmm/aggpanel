@@ -1,0 +1,13 @@
+{
+    "name" : "pcaudio",
+    "description" : "Listen to PC audio",
+    "actions" : [
+        {
+            "send_remote_key" : {
+                "remote_node" : "carbon",
+                "remote_name" : "RAV514",
+                "key_name" : "KEY_AV_4"
+            }
+        }
+    ]
+}
