@@ -37,6 +37,19 @@ class AggManager(object):
                          remote_name=remote_name,
                          key_name=key_name)
 
+    def start_key_press(self, remote_node, remote_name, key_name, rpt_count):
+        drv_list = self.client.call('list_drivers')
+
+        if 'lircd-{}'.format(remote_node) not in drv_list:
+            return
+
+        self.client.call('module_call_method',
+                         'lircd-{}'.format(remote_node),
+                         'start_key_press',
+                         remote_name=remote_name,
+                         key_name=key_name,
+                         repeat_count=str(rpt_count))
+
     @staticmethod
     def get_element_from_name(name):
         return AGGREGATOR_REGEX.match(name).group(3)

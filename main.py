@@ -37,7 +37,7 @@ def make_button_class(class_name, img_up, img_down, img_path, color_down='000000
     canvas:
         Clear
         Color:
-            rgb: self.hextorgb('{bgup}')
+            rgb: self.hextorgb('{bgdis}' if self.disabled else '{bgup}')
         RoundedRectangle:
             size: self.size
             pos: self.pos
@@ -63,6 +63,9 @@ for key_class, key_prop in KEY_CLASS_IMAGES.iteritems():
                       key_prop['color_down'], key_prop['color_up'], key_prop['color_dis'])
 
 class RootWidget(FloatLayout):
+
+    _panel_list = ['bluray_panel', 'ctrl_panel', 'action_panel']
+
     def __init__(self, *args, **kwargs):
         super(RootWidget, self).__init__(*args, **kwargs)
         self.active_aggregator = None
@@ -71,6 +74,7 @@ class RootWidget(FloatLayout):
 
         #register action types
         self.userman.register_action_hook('send_remote_key', self._action_key_press)
+        self.userman.register_action_hook('start_key_press', self._action_start_key_press)
         self.userman.register_action_hook('wait', self._insert_wait)
         Clock.schedule_interval(self._check_action_queue, 0.1)
 
@@ -82,6 +86,12 @@ class RootWidget(FloatLayout):
             return
 
         self._queue_action(self._key_press, **key_data)
+
+    def _action_start_key_press(self, key_data):
+        if 'remote_name' not in key_data or 'key_name' not in key_data:
+            return
+
+        self._queue_action(self._rpt_key_press, **key_data)
 
     def _insert_wait(self, wait_data):
         if 'amount' not in wait_data:
@@ -99,10 +109,13 @@ class RootWidget(FloatLayout):
                 action[0](**action[1])
 
     def set_active_aggregator(self, aggregator):
-        #if aggregator != None:
-        #    self.ids.main_grid.disabled = False
-        #else:
-        #    self.ids.main_grid.disabled = True
+        for panel_id in self._panel_list:
+            if aggregator != None:
+                self.ids[panel_id].disabled = False
+                self.activate_button_configuration(None)
+            else:
+                self.ids[panel_id].disabled = True
+
         self.active_aggregator = aggregator
 
     def execute_action(self, action_name):
@@ -120,8 +133,17 @@ class RootWidget(FloatLayout):
                 Logger.info('KEYPRESS: sending "{}" to remote "{}" at node "{}"'.format(key_name, remote_name, remote_node))
                 self.active_aggregator.key_press(remote_node, remote_name, key_name)
 
+    def _rpt_key_press(self, remote_node, remote_name, key_name, rpt_count=0):
+        if self.active_aggregator != None:
+            if remote_name != '' and key_name != '' and remote_node != '':
+                Logger.info('KEYPRESS: sending "{}" to remote "{}" at node "{}"'.format(key_name, remote_name, remote_node))
+                self.active_aggregator.start_key_press(remote_node, remote_name, key_name, rpt_count)
+
     def activate_button_configuration(self, scheme_name):
-        self.userman.apply_button_scheme(scheme_name, self)
+        if scheme_name == None:
+            self.userman.reset_button_scheme(self)
+        else:
+            self.userman.apply_button_scheme(scheme_name, self)
 
 class MainApp(App):
 

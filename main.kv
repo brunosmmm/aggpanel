@@ -6,6 +6,8 @@
         TabbedPanelItem:
             text: 'Controls'
             FloatLayout:
+                id: ctrl_panel
+                disabled: True
                 canvas.before:
                     Color:
                         rgb: (1.,1.,1.)
@@ -16,10 +18,12 @@
                         size_hint: 0.2, 1
                         orientation: 'vertical'
                         spacing: 5
-                        BoxLayout:
-                            id: genctrlselect
+                        KeyGrid:
+                        #BoxLayout:
+                            id: ctrlscheme_group
                             size_hint: 1., 0.2
-                            orientation: 'horizontal'
+                            #orientation: 'horizontal'
+                            cols: 3
                             spacing: 5
                             KeyCD:
                                 load_scheme: 'bdscheme'
@@ -27,7 +31,6 @@
                                 load_scheme: 'tvscheme'
                             KeyPC:
                                 load_scheme: 'pcscheme'
-                                #execute_action: 'pcaudio'
                         KeyGrid:
                             id: numericctrl_group
                             cols: 3
@@ -67,18 +70,9 @@
                                 id: keyvoldn
                             KeyMute:
                                 id: keymute
-                            #remote_node: 'carbon'
-                            #Image:
-                            #    source: 'img/cd_red.png'
-                            #Widget:
-                            #KeyEject:
-                            #    id: eject
-                            #    remote_name: 'AK59'
-                            #    key_name: 'KEY_EJECTCLOSECD'
 
                     BoxLayout:
                         size_hint: 0.2, 1
-                        #pos_hint: {'x':1-(self.width/self.parent.width), 'y':0}
                         orientation: 'vertical'
                         KeyGrid:
                             id: mediactrl_group
@@ -159,6 +153,8 @@
         TabbedPanelItem:
             text: 'Bluray'
             FloatLayout:
+                id: bluray_panel
+                disabled: True
                 BoxLayout:
                     orientation: 'horizontal'
                     KeyGrid:
@@ -166,34 +162,43 @@
                         cols: 4
                         remote_node: 'carbon'
                         KeyEject:
+                            remote_node: 'carbon'
                             remote_name: 'AK59'
                             key_name: 'KEY_EJECTCLOSECD'
                         KeyAudio:
+                            remote_node: 'carbon'
                             remote_name: 'AK59'
                             key_name: 'KEY_AUDIO'
-                            text: 'AUDIO'
                         KeyText:
+                            remote_node: 'carbon'
                             remote_name: 'AK59'
                             key_name: 'KEY_SUBTITLE'
                         KeyInfo:
+                            remote_node: 'carbon'
                             remote_name: 'AK59'
                             key_name: 'KEY_INFO'
                         KeyBlankA:
+                            remote_node: 'carbon'
                             remote_name: 'AK59'
                             key_name: 'KEY_A'
                         KeyBlankB:
+                            remote_node: 'carbon'
                             remote_name: 'AK59'
                             key_name: 'KEY_B'
                         KeyBlankC:
+                            remote_node: 'carbon'
                             remote_name: 'AK59'
                             key_name: 'KEY_C'
                         KeyBlankD:
+                            remote_node: 'carbon'
                             remote_name: 'AK59'
                             key_name: 'KEY_D'
         
         TabbedPanelItem:
             text: 'Activity List'
             FloatLayout:
+                id: action_panel
+                disabled: True
                 BoxLayout:
                     orientation: 'vertical'
                     Button:
