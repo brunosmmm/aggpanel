@@ -1,0 +1,109 @@
+{
+    "name" : "tvscheme",
+    "description" : "Button scheme for TV controlling",
+    "scheme" :
+    {
+    "numericctrl_group" : {
+        "global" : {
+            "disabled" : true
+        }
+    },
+
+    "volctrl_group" : {
+        "global" : {
+            "remote_node" : "silicon",
+            "remote_name" : "rokuTV"
+        },
+        "keyvolup":
+        {
+            "key_name" : "KEY_VOLUMEUP"
+        },
+        "keyvoldn":
+        {
+            "key_name" : "KEY_VOLUMEDOWN"
+        },
+        "keymute":
+        {
+            "key_name" : "KEY_MUTE"
+        }
+    },
+
+    "mediactrl_group":
+    {
+        "global" :
+        {
+            "remote_node" : "silicon",
+            "remote_name" : "rokuTV"
+        },
+        "keypower":
+        {
+            "key_name" : "KEY_POWER"
+        },
+        "keyback":
+        {
+            "key_name" : "KEY_BACK"
+        },
+        "keyhome":
+        {
+            "key_name" : "KEY_HOME"
+        },
+        "keyup":
+        {
+            "key_name" : "KEY_UP"
+        },
+        "keyok":
+        {
+            "key_name" : "KEY_OK"
+        },
+        "keydown":
+        {
+            "key_name" : "KEY_DOWN"
+        },
+        "keyleft":
+        {
+            "key_name" : "KEY_LEFT"
+        },
+        "keyright":
+        {
+            "key_name" : "KEY_RIGHT"
+        },
+        "keyexit":
+        {
+            "key_name" : "KEY_EXIT"
+        },
+        "keydown":
+        {
+            "key_name" : "KEY_DOWN"
+        },
+        "keymenu":
+        {
+            "key_name" : "KEY_MENU"
+        },
+        "keyrew":
+        {
+            "key_name" : "KEY_REWIND"
+        },
+        "keyplay":
+        {
+            "key_name" : "KEY_PLAY"
+        },
+        "keyff":
+        {
+            "key_name" : "KEY_FASTFORWARD"
+        },
+        "keyprev":
+        {
+            "disabled" : true
+        },
+        "keystop":
+        {
+            "disabled": true
+        },
+        "keynext":
+        {
+            "disabled" : true
+        }
+    }
+    }
+
+}

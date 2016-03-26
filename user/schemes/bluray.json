@@ -1,0 +1,140 @@
+{
+    "name" : "bdscheme",
+    "description" : "Button scheme for Bluray controlling",
+    "scheme" :
+    {
+    "numericctrl_group" : {
+        "global" : {
+            "remote_node": "carbon",
+            "remote_name": "AK59"
+        },
+        "num_1" : {
+            "key_name": "KEY_1"
+        },
+        "num_2" : {
+            "key_name": "KEY_2"
+        },
+        "num_3" : {
+            "key_name": "KEY_3"
+        },
+        "num_4" : {
+            "key_name": "KEY_4"
+        },
+        "num_5" : {
+            "key_name": "KEY_5"
+        },
+        "num_6" : {
+            "key_name": "KEY_6"
+        },
+        "num_7" : {
+            "key_name": "KEY_7"
+        },
+        "num_8" : {
+            "key_name": "KEY_8"
+        },
+        "num_9" : {
+            "key_name": "KEY_9"
+        },
+        "num_0" : {
+            "key_name": "KEY_0"
+        }
+    },
+
+    "volctrl_group" : {
+        "global" : {
+            "remote_node" : "carbon",
+            "remote_name" : "RAV514"
+        },
+        "keyvolup":
+        {
+            "key_name" : "KEY_VOLUME_UP"
+        },
+        "keyvoldn":
+        {
+            "key_name" : "KEY_VOLUME_DOWN"
+        },
+        "keymute":
+        {
+            "key_name" : "KEY_MUTE"
+        }
+    },
+
+    "mediactrl_group":
+    {
+        "global" :
+        {
+            "remote_node" : "carbon",
+            "remote_name" : "AK59"
+        },
+        "keypower":
+        {
+            "key_name" : "KEY_POWER"
+        },
+        "keyback":
+        {
+            "key_name" : "KEY_BACK"
+        },
+        "keyhome":
+        {
+            "key_name" : "KEY_HOME"
+        },
+        "keyup":
+        {
+            "key_name" : "KEY_UP"
+        },
+        "keyok":
+        {
+            "key_name" : "KEY_ENTER"
+        },
+        "keydown":
+        {
+            "key_name" : "KEY_DOWN"
+        },
+        "keyleft":
+        {
+            "key_name" : "KEY_LEFT"
+        },
+        "keyright":
+        {
+            "key_name" : "KEY_RIGHT"
+        },
+        "keyexit":
+        {
+            "key_name" : "KEY_EXIT"
+        },
+        "keydown":
+        {
+            "key_name" : "KEY_DOWN"
+        },
+        "keymenu":
+        {
+            "key_name" : "KEY_TOOLS"
+        },
+        "keyrew":
+        {
+            "key_name" : "KEY_REWIND"
+        },
+        "keyplay":
+        {
+            "key_name" : "KEY_PLAY"
+        },
+        "keyff":
+        {
+            "key_name" : "KEY_FASTFORWARD"
+        },
+        "keyprev":
+        {
+            "key_name": "KEY_PREVIOUS"
+        },
+        "keystop":
+        {
+            "key_name": "KEY_STOP"
+        },
+        "keynext":
+        {
+            "key_name": "KEY_NEXT"
+        }
+    }
+    }
+
+}

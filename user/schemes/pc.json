@@ -1,0 +1,47 @@
+{
+    "name" : "pcscheme",
+    "description" : "Button scheme for PC",
+    "scheme" :
+    {
+    "numericctrl_group" : {
+        "global" : {
+            "disabled" : true
+        }
+    },
+
+    "volctrl_group" : {
+        "global" : {
+            "remote_node" : "carbon",
+            "remote_name" : "RAV514"
+        },
+        "keyvolup":
+        {
+            "key_name" : "KEY_VOLUME_UP"
+        },
+        "keyvoldn":
+        {
+            "key_name" : "KEY_VOLUME_DOWN"
+        },
+        "keymute":
+        {
+            "key_name" : "KEY_MUTE"
+        }
+    },
+
+    "mediactrl_group":
+    {
+        "global" :
+        {
+            "disabled" : true
+        },
+        "keypower":
+        {
+            "disabled": false,
+            "remote_node": "carbon",
+            "remote_name": "RAV514",
+            "key_name": "KEY_POWER"
+        }
+    }
+    }
+
+}

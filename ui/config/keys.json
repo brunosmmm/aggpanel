@@ -1,0 +1,242 @@
+{
+  "KeyOK": {
+    "color_up": "AA7E39",
+    "img": "check",
+    "color_down": "D4AB6A",
+    "color_dis": "FFDEAA"
+  },
+  "Key1": {
+    "color_up": "051C38",
+    "img": "1",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "Key4": {
+    "color_up": "051C38",
+    "img": "4",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "Key5": {
+    "color_up": "051C38",
+    "img": "5",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "Key6": {
+    "color_up": "051C38",
+    "img": "6",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "Key7": {
+    "color_up": "051C38",
+    "img": "7",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "Key0": {
+    "color_up": "051C38",
+    "img": "0",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyStop": {
+    "color_up": "2B823A",
+    "img": "stop",
+    "color_down": "51A35F",
+    "color_dis": "88CC88"
+  },
+  "Key2": {
+    "color_up": "051C38",
+    "img": "2",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "Key3": {
+    "color_up": "051C38",
+    "img": "3",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyAudio": {
+    "color_up": "2B4A6F",
+    "img": "audio",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyLeft": {
+    "color_up": "AA7E39",
+    "img": "left",
+    "color_down": "D4AB6A",
+    "color_dis": "FFDEAA"
+  },
+  "Key8": {
+    "color_up": "051C38",
+    "img": "8",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "Key9": {
+    "color_up": "051C38",
+    "img": "9",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyNext": {
+    "color_up": "2B823A",
+    "img": "next",
+    "color_down": "51A35F",
+    "color_dis": "88CC88"
+  },
+  "KeyHome": {
+    "color_up": "2B4A6F",
+    "img": "home",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyVolDn": {
+    "color_up": "AA4139",
+    "img": "speaker-2",
+    "color_down": "D4726A",
+    "color_dis": "FFAAAA"
+  },
+  "KeyBack": {
+    "color_up": "2B4A6F",
+    "img": "back",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyMute": {
+    "color_up": "AA4139",
+    "img": "speaker-4",
+    "color_down": "D4726A",
+    "color_dis": "FFAAAA"
+  },
+  "KeyEject": {
+    "color_up": "2B4A6F",
+    "img": "eject",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyRight": {
+    "color_up": "AA7E39",
+    "img": "right",
+    "color_down": "D4AB6A",
+    "color_dis": "FFDEAA"
+  },
+  "KeyInfo": {
+    "color_up": "2B4A6F",
+    "img": "info",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyVolUp": {
+    "color_up": "AA4139",
+    "img": "speaker-3",
+    "color_down": "D4726A",
+    "color_dis": "FFAAAA"
+  },
+  "KeyPlay": {
+    "color_up": "2B823A",
+    "img": "play",
+    "color_down": "51A35F",
+    "color_dis": "88CC88"
+  },
+  "KeyMenu": {
+    "color_up": "2B4A6F",
+    "img": "menu",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyText": {
+    "color_up": "2B4A6F",
+    "img": "subtitle",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyBlankD": {
+    "color_up": "2B4A6F",
+    "img": "empty",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyBlankA": {
+    "color_up": "AA4139",
+    "img": "empty",
+    "color_down": "D4726A",
+    "color_dis": "FFAAAA"
+  },
+  "KeyBlankC": {
+    "color_up": "AA7E39",
+    "img": "empty",
+    "color_down": "D4AB6A",
+    "color_dis": "FFDEAA"
+  },
+  "KeyPower": {
+    "color_up": "2B4A6F",
+    "img": "power",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyPrev": {
+    "color_up": "2B823A",
+    "img": "prev",
+    "color_down": "51A35F",
+    "color_dis": "88CC88"
+  },
+  "KeyBlankB": {
+    "color_up": "2B823A",
+    "img": "empty",
+    "color_down": "51A35F",
+    "color_dis": "88CC88"
+  },
+  "KeyRewind": {
+    "color_up": "2B823A",
+    "img": "rew",
+    "color_down": "51A35F",
+    "color_dis": "88CC88"
+  },
+  "KeyDown": {
+    "color_up": "AA7E39",
+    "img": "down",
+    "color_down": "D4AB6A",
+    "color_dis": "FFDEAA"
+  },
+  "KeyFastForward": {
+    "color_up": "2B823A",
+    "img": "ff",
+    "color_down": "51A35F",
+    "color_dis": "88CC88"
+  },
+  "KeyRefreshBack": {
+    "color_up": "2B4A6F",
+    "img": "refresh",
+    "color_down": "4B688B",
+    "color_dis": "748BA7"
+  },
+  "KeyUp": {
+    "color_up": "AA7E39",
+    "img": "up",
+    "color_down": "D4AB6A",
+    "color_dis": "FFDEAA"
+  },
+    "KeyTV": {
+        "color_up": "801515",
+        "img" : "tv",
+        "color_down": "D46A6A",
+        "color_dis": "FFAAAA"
+    },
+    "KeyCD": {
+        "color_up": "801515",
+        "img" : "cd",
+        "color_down": "D46A6A",
+        "color_dis": "FFAAAA"
+    },
+    "KeyPC": {
+        "color_up": "801515",
+        "img": "computer",
+        "color_down": "D46A6A",
+        "color_dis": "FFAAAA"
+    }
+}

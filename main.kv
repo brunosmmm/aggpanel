@@ -4,98 +4,204 @@
         do_default_tab: False
         
         TabbedPanelItem:
-            text: 'Room 1'
+            text: 'Controls'
             FloatLayout:
                 canvas.before:
                     Color:
                         rgb: (1.,1.,1.)
                 BoxLayout:
-                    size_hint: 0.2, 1
-                    pos_hint: {'x':1-(self.width/self.parent.width), 'y':0}
-                    orientation: 'vertical'
-                    GridLayout:
-                        size_hint: 1, 1
-                        cols: 3
+                    orientation: 'horizontal'
+                    spacing: 10
+                    BoxLayout:
+                        size_hint: 0.2, 1
+                        orientation: 'vertical'
                         spacing: 5
-                        #col_default_width: 60
-                        #row_default_height: 60
-                        remote_node: 'silicon'
-                        Image:
-                            source: 'img/tv_red.png'
-                        Widget:
-                        KeyPower:
-                            id: tvpower
+                        BoxLayout:
+                            id: genctrlselect
+                            size_hint: 1., 0.2
+                            orientation: 'horizontal'
+                            spacing: 5
+                            KeyCD:
+                                load_scheme: 'bdscheme'
+                            KeyTV:
+                                load_scheme: 'tvscheme'
+                            KeyPC:
+                                load_scheme: 'pcscheme'
+                                #execute_action: 'pcaudio'
+                        KeyGrid:
+                            id: numericctrl_group
+                            cols: 3
+                            spacing: 5
+                            remote_node: ''
+                            remote_name: ''
+                            Key1:
+                                id: num_1
+                            Key2:
+                                id: num_2
+                            Key3:
+                                id: num_3
+                            Key4:
+                                id: num_4
+                            Key5:
+                                id: num_5
+                            Key6:
+                                id: num_6
+                            Key7:
+                                id: num_7
+                            Key8:
+                                id: num_8
+                            Key9:
+                                id: num_9
+                            Widget:
+                            Key0:
+                                id: num_0
+                            Widget:
+                        KeyGrid:
+                            id: volctrl_group
+                            size_hint: 1., 0.25
+                            cols: 3
+                            spacing: 5
+                            KeyVolUp:
+                                id: keyvolup
+                            KeyVolDn:
+                                id: keyvoldn
+                            KeyMute:
+                                id: keymute
+                            #remote_node: 'carbon'
+                            #Image:
+                            #    source: 'img/cd_red.png'
+                            #Widget:
+                            #KeyEject:
+                            #    id: eject
+                            #    remote_name: 'AK59'
+                            #    key_name: 'KEY_EJECTCLOSECD'
+
+                    BoxLayout:
+                        size_hint: 0.2, 1
+                        #pos_hint: {'x':1-(self.width/self.parent.width), 'y':0}
+                        orientation: 'vertical'
+                        KeyGrid:
+                            id: mediactrl_group
+                            cols: 3
+                            spacing: 5
+                            remote_node: 'silicon'
                             remote_name: 'rokuTV'
-                            key_name: 'KEY_POWER'
-                            #execute_action: 'watchtv'
-                        KeyBack:
-                            id: tvback
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_BACK'
-                        KeyUp:
-                            id: tvup
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_UP'
-                        KeyHome:
-                            id: tvhome
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_HOME'
-                        KeyLeft:
-                            id: tvleft
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_LEFT'
-                        KeyOK:
-                            id: tvok
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_OK'
-                        KeyRight:
-                            id: tvright
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_RIGHT'
-                        KeyRefreshBack:
-                            id: tvexit
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_EXIT'
-                        KeyDown:
-                            id: tvdown
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_DOWN'
-                        KeyMenu:
-                            id: tvmenu
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_MENU'
-                        KeyRewind:
-                            id: tvrew
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_REWIND'
-                        KeyPlay:
-                            id: tvplay
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_PLAY'
-                        KeyFastForward:
-                            id: tvff
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_FASTFORWARD'
-                        KeyVolUp:
-                            id: tvvolup
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_VOLUMEUP'
-                        KeyVolDn:
-                            id: tvvoldn
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_VOLUMEDOWN'
-                        KeyMute:
-                            id: tvmute
-                            remote_name: 'rokuTV'
-                            key_name: 'KEY_MUTE'
+                            Widget:
+                            Widget:
+                            KeyPower:
+                                id: keypower
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_POWER'
+                                #execute_action: 'watchtv'
+                            KeyBack:
+                                id: keyback
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_BACK'
+                            KeyUp:
+                                id: keyup
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_UP'
+                            KeyHome:
+                                id: keyhome
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_HOME'
+                            KeyLeft:
+                                id: keyleft
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_LEFT'
+                            KeyOK:
+                                id: keyok
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_OK'
+                            KeyRight:
+                                id: keyright
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_RIGHT'
+                            KeyRefreshBack:
+                                id: keyexit
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_EXIT'
+                            KeyDown:
+                                id: keydown
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_DOWN'
+                            KeyMenu:
+                                id: keymenu
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_MENU'
+                            KeyRewind:
+                                id: keyrew
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_REWIND'
+                            KeyPlay:
+                                id: keyplay
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_PLAY'
+                            KeyFastForward:
+                                id: keyff
+                                remote_name: 'rokuTV'
+                                key_name: 'KEY_FASTFORWARD'
+                            KeyPrev:
+                                id: keyprev
+                                remote_name: ''
+                                key_name: ''
+                                load_scheme: 'tvscheme'
+                            KeyStop:
+                                id: keystop
+                                remote_name: ''
+                                key_name: ''
+                            KeyNext:
+                                id: keynext
+                                remote_name: ''
+                                key_name: ''
 
         
         TabbedPanelItem:
-            text: 'Room 2'
+            text: 'Bluray'
             FloatLayout:
-                GridLayout:
-    				cols: 2
+                BoxLayout:
+                    orientation: 'horizontal'
+                    KeyGrid:
+                        id: blurayctrl_group
+                        cols: 4
+                        remote_node: 'carbon'
+                        KeyEject:
+                            remote_name: 'AK59'
+                            key_name: 'KEY_EJECTCLOSECD'
+                        KeyAudio:
+                            remote_name: 'AK59'
+                            key_name: 'KEY_AUDIO'
+                            text: 'AUDIO'
+                        KeyText:
+                            remote_name: 'AK59'
+                            key_name: 'KEY_SUBTITLE'
+                        KeyInfo:
+                            remote_name: 'AK59'
+                            key_name: 'KEY_INFO'
+                        KeyBlankA:
+                            remote_name: 'AK59'
+                            key_name: 'KEY_A'
+                        KeyBlankB:
+                            remote_name: 'AK59'
+                            key_name: 'KEY_B'
+                        KeyBlankC:
+                            remote_name: 'AK59'
+                            key_name: 'KEY_C'
+                        KeyBlankD:
+                            remote_name: 'AK59'
+                            key_name: 'KEY_D'
         
         TabbedPanelItem:
-            text: 'Room 3'
+            text: 'Activity List'
             FloatLayout:
+                BoxLayout:
+                    orientation: 'vertical'
+                    Button:
+                        text: 'Watch TV'
+                        on_press: root.execute_action('watchtv')
+                    Button:
+                        text: 'PC Audio'
+                        on_press: root.execute_action('pcaudio')
+                    Button:
+                        text: 'Watch Blu-ray/DVD'
+                        on_press: root.execute_action('watchbd')
