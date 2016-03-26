@@ -3,6 +3,7 @@ import os
 from userman.exception import *
 from kivy.logger import Logger
 import re
+from collections import OrderedDict
 
 USER_ACTION_LIST = ['send_remote_key']
 JSON_FILE_REGEX = re.compile(r'.*\.json$')
@@ -71,7 +72,7 @@ class UserConfigManager(object):
         loaded = False
 
         with open(scheme_file, 'r') as f:
-            scheme = json.load(f)
+            scheme = json.load(f, object_pairs_hook=OrderedDict)
             self.button_schemes[scheme['name']] = ButtonScheme(scheme['description'],
                                                                scheme['scheme'])
             loaded = True
