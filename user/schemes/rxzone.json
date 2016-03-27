@@ -5,6 +5,13 @@
         "do_not_reset": "true"
     },
     "scheme": {
+        "rxzonesel_group": {
+            "rx_zonepower": {
+                "remote_node": "carbon",
+                "remote_name": "RAV514",
+                "key_name": "KEY_ZONE_POWER"
+            }
+        },
         "receiver_group": {
             "global": {
                 "disabled": false,
