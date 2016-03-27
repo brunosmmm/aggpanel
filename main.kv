@@ -181,70 +181,93 @@
                             Slider:
                                 id: zone2_volume
                                 orientation: 'vertical'
-                    KeyGrid:
-                        id: receiver_group
-                        cols: 4
+                    BoxLayout:
+                        orientation: 'vertical'
                         spacing: 5
-                        RemoteKey:
-                            id: rx_hdmi_1
-                            text: 'HDMI 1'
-                        RemoteKey:
-                            id: rx_hdmi_2
-                            text: 'HDMI 2'
-                        RemoteKey:
-                            id: rx_hdmi_3
-                            text: 'HDMI 3'
-                        RemoteKey:
-                            id: rx_hdmi_4
-                            text: 'HDMI 4'
-                        RemoteKey:
-                            id: rx_hdmi_5
-                            text: 'HDMI 5'
-                        RemoteKey:
-                            id: rx_hdmi_6
-                            text: 'HDMI 6'
-                        RemoteKey:
-                            id: rx_hdmi_7
-                            text: 'HDMI 7'
-                        RemoteKey:
-                            id: rx_vaux
-                            text: 'V-AUX'
-                        RemoteKey:
-                            id: rx_av_1
-                            text: 'AV 1'
-                        RemoteKey:
-                            id: rx_av_2
-                            text: 'AV 2'
-                        RemoteKey:
-                            id: rx_av_3
-                            text: 'AV 3'
-                        RemoteKey:
-                            id: rx_av_4
-                            text: 'AV 4'
-                        RemoteKey:
-                            id: rx_av_5
-                            text: 'AV 5'
-                        RemoteKey:
-                            id: rx_av_6
-                            text: 'AV 6'
-                        RemoteKey:
-                            id: rx_audio_1
-                            text: 'AUDIO 1'
-                        RemoteKey:
-                            id: rx_audio_2
-                            text: 'AUDIO 2'
-                        RemoteKey:
-                            id: rx_tuner
-                            text: 'TUNER'
-                        RemoteKey:
-                            id: rx_usb
-                            text: 'USB'
-                        RemoteKey:
-                            id: rx_net
-                            text: 'NET'
-                        RemoteKey:
-                            id: rx_party
-                            text: 'PARTY'
+                        KeyGrid:
+                            id: rxzonesel_group
+                            size_hint: 1., 0.2
+                            cols: 4
+                            spacing: 5
+                            PanelToggleActionButton:
+                                id: rx_mainzone
+                                allow_no_selection: False
+                                text: 'Main Zone'
+                                group: 'rx_zone_group'
+                                state: 'down'
+                                load_scheme: 'rxmain'
+                            PanelToggleActionButton:
+                                allow_no_selection: False
+                                id: rx_zone2
+                                text: 'Zone 2'
+                                group: 'rx_zone_group'
+                                load_scheme: 'rxzone'
+                            Widget:
+                            Widget:
+                        KeyGrid:
+                            id: receiver_group
+                            cols: 4
+                            spacing: 5
+                            RemoteKey:
+                                id: rx_hdmi_1
+                                text: 'HDMI 1'
+                            RemoteKey:
+                                id: rx_hdmi_2
+                                text: 'HDMI 2'
+                            RemoteKey:
+                                id: rx_hdmi_3
+                                text: 'HDMI 3'
+                            RemoteKey:
+                                id: rx_hdmi_4
+                                text: 'HDMI 4'
+                            RemoteKey:
+                                id: rx_hdmi_5
+                                text: 'HDMI 5'
+                            RemoteKey:
+                                id: rx_hdmi_6
+                                text: 'HDMI 6'
+                            RemoteKey:
+                                id: rx_hdmi_7
+                                text: 'HDMI 7'
+                            RemoteKey:
+                                id: rx_vaux
+                                text: 'V-AUX'
+                            RemoteKey:
+                                id: rx_av_1
+                                text: 'AV 1'
+                            RemoteKey:
+                                id: rx_av_2
+                                text: 'AV 2'
+                            RemoteKey:
+                                id: rx_av_3
+                                text: 'AV 3'
+                            RemoteKey:
+                                id: rx_av_4
+                                text: 'AV 4'
+                            RemoteKey:
+                                id: rx_av_5
+                                text: 'AV 5'
+                            RemoteKey:
+                                id: rx_av_6
+                                text: 'AV 6'
+                            RemoteKey:
+                                id: rx_audio_1
+                                text: 'AUDIO 1'
+                            RemoteKey:
+                                id: rx_audio_2
+                                text: 'AUDIO 2'
+                            RemoteKey:
+                                id: rx_tuner
+                                text: 'TUNER'
+                            RemoteKey:
+                                id: rx_usb
+                                text: 'USB'
+                            RemoteKey:
+                                id: rx_net
+                                text: 'NET'
+                            RemoteKey:
+                                id: rx_party
+                                text: 'PARTY'
         
         TabbedPanelItem:
             text: 'Activity List'

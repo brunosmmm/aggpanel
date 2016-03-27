@@ -18,7 +18,7 @@ from userman import UserConfigManager
 from collections import deque
 from kivy.clock import Clock
 from kivy.core.window import Window
-from ui.remotekey import RemoteKey
+from ui.remotekey import RemoteKey, PanelToggleActionButton
 from ui.keygrid import KeyGrid
 import json
 
