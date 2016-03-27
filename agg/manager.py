@@ -74,6 +74,8 @@ class AggManager(object):
                         request['callback'](value)
                 elif request['req'] == 'set_property':
                     self.client.module_set_property(request['inst_name'], request['prop_name'], request['value'])
+                    if request['callback'] != None:
+                        request['callback'](request['prop_name'])
                 elif request['req'] == 'call_method':
                     retval = self.client.module_call_method(request['inst_name'], request['method_name'], **request['kwargs'])
                     if request['callback'] != None:
@@ -105,7 +107,7 @@ class AggManager(object):
                                                                                   prop_name))
         return None
 
-    def set_module_property(self, inst_name, prop_name, value, block=True):
+    def set_module_property(self, inst_name, prop_name, value, block=True, callback=None):
         if inst_name not in self.server_drv_list:
             return
 
@@ -122,7 +124,8 @@ class AggManager(object):
             self.request_queue.append({'req' : 'set_property',
                                        'inst_name': inst_name,
                                        'prop_name': prop_name,
-                                       'value': value})
+                                       'value': value,
+                                       'callback': callback})
 
         except:
             Logger.warning('could not write property "{}" of instance "{}"'.format(inst_name,
