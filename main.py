@@ -20,6 +20,7 @@ from kivy.clock import Clock
 from kivy.core.window import Window
 from ui.remotekey import RemoteKey, PanelToggleActionButton
 from ui.keygrid import KeyGrid
+from ui.slider import RXVolumeSlider
 import json
 
 IMAGE_PATH = 'img'
@@ -78,6 +79,7 @@ class RootWidget(FloatLayout):
         #register action types
         self.userman.register_action_hook('send_remote_key', self._action_key_press)
         self.userman.register_action_hook('start_key_press', self._action_start_key_press)
+        self.userman.register_action_hook('set_rx_volume', self._action_set_volume)
         self.userman.register_action_hook('wait', self._insert_wait)
         Clock.schedule_interval(self._check_action_queue, 0.1)
 
@@ -90,6 +92,9 @@ class RootWidget(FloatLayout):
 
     def _queue_action(self, action_cb, **kwargs):
         self.act_queue.append([action_cb, kwargs])
+
+    def _action_set_volume(self, data):
+        pass
 
     def _action_key_press(self, key_data):
         if 'remote_name' not in key_data or 'key_name' not in key_data:
@@ -154,6 +159,24 @@ class RootWidget(FloatLayout):
             self.userman.reset_button_scheme()
         else:
             self.userman.apply_button_scheme(scheme_name)
+
+    def tab_selected(self, tab):
+        if tab == self.ids['receiver_tab']:
+            self.refresh_receiver_panel()
+
+    def rx_slider_changed(self, control_name, value):
+        if self.active_aggregator != None:
+            #Logger.info('DEBUG: Slider {} changed value to {}'.format(control_name,
+            #                                                          value))
+            if control_name == 'main':
+                self.active_aggregator.yrx__volume = value
+            else:
+                self.active_aggregator.yrx__volume2 = value
+
+    def refresh_receiver_panel(self):
+        if self.active_aggregator != None:
+            self.ids['mainzone_volume'].set_value(self.active_aggregator.yrx__volume)
+            self.ids['zone2_volume'].set_value(self.active_aggregator.yrx__volume2)
 
 class MainApp(App):
 

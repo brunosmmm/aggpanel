@@ -2,7 +2,7 @@
 <RootWidget>:
     TabbedPanel:
         do_default_tab: False
-        
+        on_current_tab: root.tab_selected(self.current_tab)
         TabbedPanelItem:
             text: 'Controls'
             FloatLayout:
@@ -157,6 +157,7 @@
                             key_name: 'KEY_D'
 
         TabbedPanelItem:
+            id: receiver_tab
             text: 'Receiver'
             FloatLayout:
                 id: receiver_panel
@@ -175,11 +176,13 @@
                                 text: 'Zone 2'
                         BoxLayout:
                             orientation: 'horizontal'
-                            Slider:
+                            RXVolumeSlider:
                                 id: mainzone_volume
+                                control_name: 'main'
                                 orientation: 'vertical'
-                            Slider:
+                            RXVolumeSlider:
                                 id: zone2_volume
+                                control_name: 'zone2'
                                 orientation: 'vertical'
                     BoxLayout:
                         orientation: 'vertical'
