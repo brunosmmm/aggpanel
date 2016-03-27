@@ -1,6 +1,9 @@
 import re
 import pyjsonrpc
 from kivy.logger import Logger
+from threading import Thread
+from collections import deque
+import time
 
 #compensate unknown android weirdness
 AGGREGATOR_REGEX = re.compile(r'^PeriodicPi(\s|\\032)Aggregator(\s|\\032)\[([a-zA-Z0-9]+)\]')
@@ -12,6 +15,7 @@ class AggManager(object):
         self.agg_attr = attr
         self.agg_element = element
         self.server_drv_list = []
+        self.request_queue = deque()
 
         #make client
         Logger.info('agg-{}: connecting at {}:{}'.format(self.agg_element, self.agg_addr, self.agg_port))
@@ -19,6 +23,11 @@ class AggManager(object):
 
         #get information
         self.refresh_driver_list()
+
+        #spawn thread
+        self.stop = False
+        Thread(target=self._next_request).start()
+
 
     def __getattribute__(self, name):
         #try to parse
@@ -54,52 +63,96 @@ class AggManager(object):
 
         return super(AggManager, self).__setattr__(name, value)
 
-    def get_module_property(self, inst_name, prop_name):
+    def _next_request(self):
+
+        while self.stop == False:
+            if len(self.request_queue) > 0:
+                request = self.request_queue.popleft()
+                if request['req'] == 'get_property':
+                    value = self.client.module_get_property(request['inst_name'], request['prop_name'])
+                    if request['callback'] != None:
+                        request['callback'](value)
+                elif request['req'] == 'set_property':
+                    self.client.module_set_property(request['inst_name'], request['prop_name'], request['value'])
+                elif request['req'] == 'call_method':
+                    retval = self.client.module_call_method(request['inst_name'], request['method_name'], **request['kwargs'])
+                    if request['callback'] != None:
+                        request['callback'](retval)
+
+
+            time.sleep(0.1)
+
+    def get_module_property(self, inst_name, prop_name, block=True, callback=None):
         if inst_name not in self.server_drv_list:
             return
 
+        ret_val = None
         try:
-            return self.client.module_get_property(inst_name,
-                                                   prop_name)
+            if block:
+                while len(self.request_queue) > 0:
+                    pass
+
+                return self.client.module_get_property(inst_name,
+                                                       prop_name)
+            #else
+            self.request_queue.append({'req': 'get_property',
+                                       'inst_name': inst_name,
+                                       'prop_name': prop_name,
+                                       'callback': callback})
+
         except:
             Logger.warning('could not read property "{}" of instance "{}"'.format(inst_name,
                                                                                   prop_name))
         return None
 
-    def set_module_property(self, inst_name, prop_name, value):
+    def set_module_property(self, inst_name, prop_name, value, block=True):
         if inst_name not in self.server_drv_list:
             return
 
         try:
-            return self.client.module_set_property(inst_name,
-                                                   prop_name,
-                                                   value)
+            if block:
+                while len(self.request_queue) > 0:
+                    pass
+
+                return self.client.module_set_property(inst_name,
+                                                       prop_name,
+                                                       value)
+
+            #else
+            self.request_queue.append({'req' : 'set_property',
+                                       'inst_name': inst_name,
+                                       'prop_name': prop_name,
+                                       'value': value})
+
         except:
             Logger.warning('could not write property "{}" of instance "{}"'.format(inst_name,
                                                                                   prop_name))
         return None
 
-    def call_module_method(self, inst_name, method_name, **kwargs):
+    def call_module_method(self, inst_name, method_name, block=True, callback=None, **kwargs):
         if inst_name not in self.server_drv_list:
             return None
 
         try:
-            return self.client.module_call_method(inst_name,
-                                                  method_name,
-                                                  **kwargs)
+            if block:
+                while len(self.request_queue) > 0:
+                    pass
+
+                return self.client.module_call_method(inst_name,
+                                                      method_name,
+                                                      **kwargs)
+            #else
+            self.request_queue.append({'req': 'call_method',
+                                       'inst_name': inst_name,
+                                       'method_name': method_name,
+                                       'callback': callback,
+                                       'kwargs': kwargs})
         except:
             Logger.warning('failed to call method "{}" of instance "{}"'.format(inst_name,
                                                                                 method_name))
 
         return None
 
-    def get_yrx_volume(self, main_zone=True):
-        param_name = 'volume' if main_zone else 'volume2'
-        return self.get_module_property('yrx', param_name)
-
-    def set_yrx_volume(self, value, main_zone=True):
-        param_name = 'volume' if main_zone else 'volume2'
-        self.set_module_property('yrx', param_name, value)
 
     def refresh_driver_list(self):
         self.server_drv_list = self.client.call('list_drivers')
