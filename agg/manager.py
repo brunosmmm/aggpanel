@@ -20,40 +20,102 @@ class AggManager(object):
         #get information
         self.refresh_driver_list()
 
-    #def __getattr__(self, name):
+    def __getattribute__(self, name):
+        #try to parse
+        try:
+            inst_name, prop_name = name.split('__')
+
+            if inst_name not in self.server_drv_list:
+                if inst_name.replace('_', '-') in self.server_drv_list:
+                    inst_name = inst_name.replace('_', '-')
+                else:
+                    raise AttributeError
+
+            return self.get_module_property(inst_name, prop_name)
+        except:
+            pass
+
+        return super(AggManager, self).__getattribute__(name)
+
+    def __setattr__(self, name, value):
+
+        try:
+            inst_name, prop_name = name.split('__')
+
+            if inst_name not in self.server_drv_list:
+                if inst_name.replace('_', '-') in self.server_drv_list:
+                    inst_name = inst_name.replace('_', '-')
+                else:
+                    raise AttributeError
+
+            return self.set_module_property(inst_name, prop_name, value)
+        except:
+            pass
+
+        return super(AggManager, self).__setattr__(name, value)
+
+    def get_module_property(self, inst_name, prop_name):
+        if inst_name not in self.server_drv_list:
+            return
+
+        try:
+            return self.client.module_get_property(inst_name,
+                                                   prop_name)
+        except:
+            Logger.warning('could not read property "{}" of instance "{}"'.format(inst_name,
+                                                                                  prop_name))
+        return None
+
+    def set_module_property(self, inst_name, prop_name, value):
+        if inst_name not in self.server_drv_list:
+            return
+
+        try:
+            return self.client.module_set_property(inst_name,
+                                                   prop_name,
+                                                   value)
+        except:
+            Logger.warning('could not write property "{}" of instance "{}"'.format(inst_name,
+                                                                                  prop_name))
+        return None
+
+    def call_module_method(self, inst_name, method_name, **kwargs):
+        if inst_name not in self.server_drv_list:
+            return None
+
+        try:
+            return self.client.module_call_method(inst_name,
+                                                  method_name,
+                                                  **kwargs)
+        except:
+            Logger.warning('failed to call method "{}" of instance "{}"'.format(inst_name,
+                                                                                method_name))
+
+        return None
+
+    def get_yrx_volume(self, main_zone=True):
+        param_name = 'volume' if main_zone else 'volume2'
+        return self.get_module_property('yrx', param_name)
+
+    def set_yrx_volume(self, value, main_zone=True):
+        param_name = 'volume' if main_zone else 'volume2'
+        self.set_module_property('yrx', param_name, value)
 
     def refresh_driver_list(self):
         self.server_drv_list = self.client.call('list_drivers')
 
     def key_press(self, remote_node, remote_name, key_name, repeat_count=0):
-        drv_list = self.client.call('list_drivers')
-
-        if 'lircd-{}'.format(remote_node) not in drv_list:
-            return
-
-        try:
-            self.client.call('module_call_method',
-                             'lircd-{}'.format(remote_node),
-                             'send_remote_key',
-                             remote_name=remote_name,
-                             key_name=key_name,
-                             repeat_count=repeat_count)
-        except:
-            Logger.warning('key_press command failed')
+        self.call_module_method('lircd-{}'.format(remote_node),
+                                'send_remote_key',
+                                remote_name=remote_name,
+                                key_name=key_name,
+                                repeat_count=repeat_count)
 
     def start_key_press(self, remote_node, remote_name, key_name):
-        drv_list = self.client.call('list_drivers')
-
-        if 'lircd-{}'.format(remote_node) not in drv_list:
-            return
-        try:
-            self.client.call('module_call_method',
-                             'lircd-{}'.format(remote_node),
-                             'start_key_press',
-                             remote_name=remote_name,
-                             key_name=key_name)
-        except:
-            Logger.warning('start_key_press command failed')
+        self.call_module_method('lircd-{}'.format(remote_node),
+                                'start_key_press',
+                                remote_name=remote_name,
+                                key_name=key_name)
 
     @staticmethod
     def get_element_from_name(name):
