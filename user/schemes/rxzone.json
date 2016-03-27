@@ -1,0 +1,77 @@
+{
+    "name": "rxzone",
+    "description": "Receiver zone 2 button scheme",
+    "options": {
+        "do_not_reset": "true"
+    },
+    "scheme": {
+        "receiver_group": {
+            "global": {
+                "disabled": false,
+                "remote_node": "carbon",
+                "remote_name": "RAV514"
+            },
+            "rx_hdmi_1": {
+                "key_name": "KEY_ZONE_HDMI_1"
+            },
+            "rx_hdmi_2": {
+                "key_name": "KEY_ZONE_HDMI_2"
+            },
+            "rx_hdmi_3": {
+                "key_name": "KEY_ZONE_HDMI_3"
+            },
+            "rx_hdmi_4": {
+                "key_name": "KEY_ZONE_HDMI_4"
+            },
+            "rx_hdmi_5": {
+                "key_name": "KEY_ZONE_HDMI_5"
+            },
+            "rx_hdmi_6": {
+                "key_name": "KEY_ZONE_HDMI_6"
+            },
+            "rx_hdmi_7": {
+                "key_name": "KEY_ZONE_HDMI_7"
+            },
+            "rx_vaux": {
+                "key_name": "KEY_ZONE_VAUX"
+            },
+            "rx_av_1": {
+                "key_name": "KEY_ZONE_AV_1"
+            },
+            "rx_av_2": {
+                "key_name": "KEY_ZONE_AV_2"
+            },
+            "rx_av_3": {
+                "key_name": "KEY_ZONE_AV_3"
+            },
+            "rx_av_4": {
+                "key_name": "KEY_ZONE_AV_4"
+            },
+            "rx_av_5": {
+                "key_name": "KEY_ZONE_AV_5"
+            },
+            "rx_av_6": {
+                "key_name": "KEY_ZONE_AV_6"
+            },
+            "rx_audio_1": {
+                "key_name": "KEY_ZONE_AUDIO_1"
+            },
+            "rx_audio_2": {
+                "key_name": "KEY_ZONE_AUDIO_2"
+            },
+            "rx_tuner": {
+                "key_name": "KEY_ZONE_TUNER"
+            },
+            "rx_usb": {
+                "key_name": "KEY_ZONE_USB"
+            },
+            "rx_net": {
+                "key_name": "KEY_ZONE_NET"
+            },
+            "rx_party": {
+                "disabled": true
+            }
+        }
+
+    }
+}
