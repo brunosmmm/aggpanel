@@ -22,6 +22,7 @@ from ui.remotekey import RemoteKey, PanelToggleActionButton
 from ui.keygrid import KeyGrid
 from ui.slider import RXVolumeSlider
 import json
+import time
 
 IMAGE_PATH = 'img'
 with open('ui/config/keys.json', 'r') as f:
@@ -88,6 +89,7 @@ class RootWidget(FloatLayout):
 
         #misc, timers
         self.refresh_timer = None
+        self.slider_change_delta = 0
 
     def _load_default_schemes(self):
         pass
@@ -174,10 +176,17 @@ class RootWidget(FloatLayout):
 
     def rx_slider_changed(self, control_name, value):
         if self.active_aggregator != None:
+
             if control_name == 'main':
-                self.active_aggregator.set_module_property('yrx', 'volume', value, block=False)
+                self.active_aggregator.set_module_property('yrx', 'volume', value, block=False, callback=self.set_volume_finished)
             else:
-                self.active_aggregator.set_module_property('yrx', 'volume2', value, block=False)
+                self.active_aggregator.set_module_property('yrx', 'volume2', value, block=False, callback=self.set_volume_finished)
+
+    def set_volume_finished(self, property_name):
+        if property_name == 'volume':
+            self.ids['mainzone_volume'].ack_change()
+        elif property_name == 'volume2':
+            self.ids['zone2_volume'].ack_change()
 
     def set_main_volume_value(self, value):
         self.ids['mainzone_volume'].set_value(value)
