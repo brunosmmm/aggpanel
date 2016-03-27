@@ -149,13 +149,13 @@ class RootWidget(FloatLayout):
         if self.active_aggregator != None:
             if remote_name != '' and key_name != '' and remote_node != '':
                 Logger.info('KEYPRESS: sending "{}" to remote "{}" at node "{}"'.format(key_name, remote_name, remote_node))
-                self.active_aggregator.key_press(remote_node, remote_name, key_name, repeat_count)
+                self.active_aggregator.call_module_method('lircd-{}'.format(remote_node),
+                                                          'send_remote_key',
+                                                          block=False,
+                                                          remote_name=remote_name,
+                                                          key_name=key_name,
+                                                          repeat_count=repeat_count)
 
-    def _rpt_key_press(self, remote_node, remote_name, key_name, rpt_count=0):
-        if self.active_aggregator != None:
-            if remote_name != '' and key_name != '' and remote_node != '':
-                Logger.info('KEYPRESS: sending "{}" to remote "{}" at node "{}"'.format(key_name, remote_name, remote_node))
-                self.active_aggregator.start_key_press(remote_node, remote_name, key_name, rpt_count)
 
     def activate_button_configuration(self, scheme_name):
         if scheme_name == None:
@@ -174,33 +174,46 @@ class RootWidget(FloatLayout):
 
     def rx_slider_changed(self, control_name, value):
         if self.active_aggregator != None:
-            #Logger.info('DEBUG: Slider {} changed value to {}'.format(control_name,
-            #                                                          value))
             if control_name == 'main':
-                self.active_aggregator.yrx__volume = value
+                self.active_aggregator.set_module_property('yrx', 'volume', value, block=False)
             else:
-                self.active_aggregator.yrx__volume2 = value
+                self.active_aggregator.set_module_property('yrx', 'volume2', value, block=False)
+
+    def set_main_volume_value(self, value):
+        self.ids['mainzone_volume'].set_value(value)
+    def set_zone_volume_value(self, value):
+        self.ids['zone2_volume'].set_value(value)
+
+    def set_zone_volume_state(self, value):
+        self.ids['zone2_volume'].disabled = not value
+        if value:
+            self.active_aggregator.get_module_property('yrx', 'zone_input', block=False, callback=self.set_zone_input)
+        else:
+            self.set_zone_input('OFF')
+
+    def set_main_volume_state(self, value):
+        self.ids['mainzone_volume'].disabled = not value
+        if value:
+            self.active_aggregator.get_module_property('yrx', 'main_input', block=False, callback=self.set_main_input)
+        else:
+            self.set_main_input('OFF')
+
+    def set_zone_input(self, value):
+        self.ids['zone_current_in'].text = value
+
+    def set_main_input(self, value):
+        self.ids['main_current_in'].text = value
 
     def refresh_receiver_panel(self, *args):
         if self.active_aggregator != None:
-
+            #non-blocking data retrieval
             if self.active_aggregator.is_driver_present('yrx'):
                 self.ids['rxvolume_group'].disabled = False
-                self.ids['mainzone_volume'].set_value(self.active_aggregator.yrx__volume)
-                self.ids['zone2_volume'].set_value(self.active_aggregator.yrx__volume2)
-
-                self.ids['mainzone_volume'].disabled = not self.active_aggregator.yrx__main_on
-                self.ids['zone2_volume'].disabled = not self.active_aggregator.yrx__zone_on
-
-                if self.active_aggregator.yrx__main_on:
-                    self.ids['main_current_in'].text = self.active_aggregator.yrx__main_input
-                else:
-                    self.ids['main_current_in'].text = 'OFF'
-
-                if self.active_aggregator.yrx__zone_on:
-                    self.ids['zone_current_in'].text = self.active_aggregator.yrx__zone_input
-                else:
-                    self.ids['zone_current_in'].text = 'OFF'
+                self.active_aggregator.get_module_property('yrx', 'volume', block=False, callback=self.set_main_volume_value)
+                self.active_aggregator.get_module_property('yrx', 'volume2', block=False, callback=self.set_zone_volume_value)
+                #disable if corresponding zone is OFF
+                self.active_aggregator.get_module_property('yrx', 'main_on', block=False, callback=self.set_main_volume_state)
+                self.active_aggregator.get_module_property('yrx', 'zone_on', block=False, callback=self.set_zone_volume_state)
             else:
                 self.ids['main_current_in'].text = ''
                 self.ids['zone_current_in'].text = ''
