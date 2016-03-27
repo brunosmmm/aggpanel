@@ -1,9 +1,40 @@
 from kivy.uix.button import Button
+from kivy.uix.togglebutton import ToggleButton
 from kivy.graphics import Color, Rectangle, RoundedRectangle
 from kivy.properties import ObjectProperty
 from kivy.logger import Logger
 
-class RemoteKey(Button):
+class PanelActionBehavior(object):
+    execute_action = ObjectProperty('')
+    load_scheme = ObjectProperty('')
+
+    def __init__(self, *args, **kwargs):
+        if 'root_widget_class' not in kwargs:
+            self.root_widget_class = 'RootWidget'
+        else:
+            self.root_widget_class = kwargs['root_widget_class']
+
+    def find_root(self):
+        root = self.parent
+        while root.__class__.__name__ != self.root_widget_class:
+            root = root.parent
+        return root
+
+    def trigger_event(self):
+
+        if self.load_scheme != '':
+            self.find_root().activate_button_configuration(self.load_scheme)
+
+        #execute action has priority over direct remote key access
+        if self.execute_action != '':
+            self.find_root().execute_action(self.execute_action)
+
+class PanelToggleActionButton(ToggleButton, PanelActionBehavior):
+    def on_press(self, *args, **kwargs):
+        self.trigger_event()
+        super(PanelToggleActionButton, self).on_press(*args, **kwargs)
+
+class RemoteKey(Button, PanelActionBehavior):
 
     bgup = ObjectProperty(None)
     bgdown = ObjectProperty(None)
@@ -11,17 +42,7 @@ class RemoteKey(Button):
     remote_node = ObjectProperty('')
     remote_name = ObjectProperty('')
     key_name = ObjectProperty('')
-    execute_action = ObjectProperty('')
-    load_scheme = ObjectProperty('')
     is_toggle = ObjectProperty(False)
-
-    def find_root(self):
-        root = self.parent
-        #while isinstance(root, self.root_widget_class) == False:
-        while root.__class__.__name__ != 'RootWidget':
-            root = root.parent
-
-        return root
 
     def hextorgb(self, h):
         if h == None:
@@ -53,7 +74,7 @@ class RemoteKey(Button):
     def canvas_ready(self):
         return self.x_pos_set and self.y_pos_set and self.w_set and self.h_set
 
-    def __init__(self, **kwargs):
+    def __init__(self, *args, **kwargs):
 
         self.x_pos_set = False
         self.y_pos_set = False
@@ -64,7 +85,8 @@ class RemoteKey(Button):
 
         self.inhibit = True
 
-        super(RemoteKey, self).__init__(**kwargs)
+        kwargs.update({'root_widget_class' : 'RootWidget'})
+        super(RemoteKey, self).__init__(*args, **kwargs)
 
     def __setattr__(self, attr, value):
         super(RemoteKey, self).__setattr__(attr, value)
