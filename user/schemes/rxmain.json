@@ -1,0 +1,77 @@
+{
+    "name": "rxmain",
+    "description": "Receiver main zone button scheme",
+    "options": {
+        "do_not_reset": "true"
+    },
+    "scheme": {
+        "receiver_group": {
+            "global": {
+                "disabled": false,
+                "remote_node": "carbon",
+                "remote_name": "RAV514"
+            },
+            "rx_hdmi_1": {
+                "key_name": "KEY_HDMI_1"
+            },
+            "rx_hdmi_2": {
+                "key_name": "KEY_HDMI_2"
+            },
+            "rx_hdmi_3": {
+                "key_name": "KEY_HDMI_3"
+            },
+            "rx_hdmi_4": {
+                "key_name": "KEY_HDMI_4"
+            },
+            "rx_hdmi_5": {
+                "key_name": "KEY_HDMI_5"
+            },
+            "rx_hdmi_6": {
+                "key_name": "KEY_HDMI_6"
+            },
+            "rx_hdmi_7": {
+                "key_name": "KEY_HDMI_7"
+            },
+            "rx_vaux": {
+                "key_name": "KEY_VAUX"
+            },
+            "rx_av_1": {
+                "key_name": "KEY_AV_1"
+            },
+            "rx_av_2": {
+                "key_name": "KEY_AV_2"
+            },
+            "rx_av_3": {
+                "key_name": "KEY_AV_3"
+            },
+            "rx_av_4": {
+                "key_name": "KEY_AV_4"
+            },
+            "rx_av_5": {
+                "key_name": "KEY_AV_5"
+            },
+            "rx_av_6": {
+                "key_name": "KEY_AV_6"
+            },
+            "rx_audio_1": {
+                "key_name": "KEY_AUDIO_1"
+            },
+            "rx_audio_2": {
+                "key_name": "KEY_AUDIO_2"
+            },
+            "rx_tuner": {
+                "key_name": "KEY_TUNER"
+            },
+            "rx_usb": {
+                "key_name": "KEY_USB"
+            },
+            "rx_net": {
+                "key_name": "KEY_NET"
+            },
+            "rx_party": {
+                "key_name": "KEY_PARTY"
+            }
+        }
+
+    }
+}

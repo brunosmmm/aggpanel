@@ -64,19 +64,29 @@ for key_class, key_prop in KEY_CLASS_IMAGES.iteritems():
 
 class RootWidget(FloatLayout):
 
-    _panel_list = ['bluray_panel', 'ctrl_panel', 'action_panel']
+    _panel_list = ['bluray_panel', 'ctrl_panel', 'action_panel', 'receiver_panel']
 
     def __init__(self, *args, **kwargs):
         super(RootWidget, self).__init__(*args, **kwargs)
         self.active_aggregator = None
-        self.userman = UserConfigManager('user', {})
         self.act_queue = deque()
+        self.userman = UserConfigManager('user', {}, self)
+
+        #attach events
+        self.userman.attach_event_hook('user_data_loaded', self._load_default_schemes)
 
         #register action types
         self.userman.register_action_hook('send_remote_key', self._action_key_press)
         self.userman.register_action_hook('start_key_press', self._action_start_key_press)
         self.userman.register_action_hook('wait', self._insert_wait)
         Clock.schedule_interval(self._check_action_queue, 0.1)
+
+        #scan user files
+        self.userman.scan_files()
+
+    def _load_default_schemes(self):
+        pass
+        #Logger.info('DEBUG: user data has been loaded')
 
     def _queue_action(self, action_cb, **kwargs):
         self.act_queue.append([action_cb, kwargs])
@@ -141,9 +151,9 @@ class RootWidget(FloatLayout):
 
     def activate_button_configuration(self, scheme_name):
         if scheme_name == None:
-            self.userman.reset_button_scheme(self)
+            self.userman.reset_button_scheme()
         else:
-            self.userman.apply_button_scheme(scheme_name, self)
+            self.userman.apply_button_scheme(scheme_name)
 
 class MainApp(App):
 
