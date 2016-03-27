@@ -3,8 +3,9 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.graphics import Color, Rectangle, RoundedRectangle
 from kivy.properties import ObjectProperty
 from kivy.logger import Logger
+from ui.misc import RootFinderMixin
 
-class PanelActionBehavior(object):
+class PanelActionBehavior(RootFinderMixin):
     execute_action = ObjectProperty('')
     load_scheme = ObjectProperty('')
 
@@ -13,12 +14,6 @@ class PanelActionBehavior(object):
             self.root_widget_class = 'RootWidget'
         else:
             self.root_widget_class = kwargs['root_widget_class']
-
-    def find_root(self):
-        root = self.parent
-        while root.__class__.__name__ != self.root_widget_class:
-            root = root.parent
-        return root
 
     def trigger_event(self):
 
