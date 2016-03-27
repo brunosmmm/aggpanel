@@ -302,6 +302,7 @@ if __name__ == '__main__':
                                    main_app.discover_service,
                                    main_app.remove_service)
         is_android = True
+        Clock.schedule_interval(listener.discover_loop, 0.1)
     except JavaException:
         #class not found!
         Logger.info('android not detected, loading zeroconf')

@@ -1,5 +1,6 @@
 from kivy.logger import Logger
 from jnius import autoclass, PythonJavaClass, java_method
+from collections import deque
 
 class AndroidListener(PythonJavaClass):
     __javainterfaces__ = ['android/net/nsd/NsdManager$DiscoveryListener', 'android/net/nsd/NsdManager$ResolveListener']
@@ -12,6 +13,8 @@ class AndroidListener(PythonJavaClass):
         PythonActivity = autoclass('org.renpy.android.PythonActivity')
         activity = PythonActivity.mActivity
         self.nsd_mgr = activity.getSystemService(android_context.NSD_SERVICE)
+
+        self.to_resolve = deque()
 
         #callbacks
         self.cb_found = service_found_cb
@@ -30,6 +33,13 @@ class AndroidListener(PythonJavaClass):
             while self.is_stopped == False:
                 if self.startstop_failed:
                     break
+
+    def discover_loop(self, *args):
+        #resolve pending
+        if len(self.to_resolve) > 0:
+            service = self.to_resolve.popleft()
+            self.nsd_mgr.resolveService(service, self)
+
 
     @java_method('(Ljava/lang/String;I)V')
     def onStopDiscoveryFailed(self, service_type, error_code):
@@ -50,8 +60,8 @@ class AndroidListener(PythonJavaClass):
 
     @java_method('(Landroid/net/nsd/NsdServiceInfo;)V')
     def onServiceFound(self, service):
-        Logger.info('android-listen: discovered service, resolving...')
-        self.nsd_mgr.resolveService(service, self)
+        Logger.info('android-listen: discovered service, queuing for resolving...')
+        self.to_resolve.append(service)
 
     @java_method('(Ljava/lang/String;)V')
     def onDiscoveryStopped(self, service_type):
