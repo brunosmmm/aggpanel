@@ -117,6 +117,9 @@ class AggManager(object):
                                 remote_name=remote_name,
                                 key_name=key_name)
 
+    def is_driver_present(self, driver_name):
+        return driver_name in self.server_drv_list
+
     @staticmethod
     def get_element_from_name(name):
         return AGGREGATOR_REGEX.match(name).group(3)

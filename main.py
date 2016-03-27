@@ -86,6 +86,9 @@ class RootWidget(FloatLayout):
         #scan user files
         self.userman.scan_files()
 
+        #misc, timers
+        self.refresh_timer = None
+
     def _load_default_schemes(self):
         pass
         #Logger.info('DEBUG: user data has been loaded')
@@ -163,6 +166,11 @@ class RootWidget(FloatLayout):
     def tab_selected(self, tab):
         if tab == self.ids['receiver_tab']:
             self.refresh_receiver_panel()
+            self.refresh_timer = Clock.schedule_interval(self.refresh_receiver_panel, 1.0)
+        else:
+            if self.refresh_timer != None:
+                self.refresh_timer.cancel()
+                self.refresh_timer = None
 
     def rx_slider_changed(self, control_name, value):
         if self.active_aggregator != None:
@@ -173,10 +181,18 @@ class RootWidget(FloatLayout):
             else:
                 self.active_aggregator.yrx__volume2 = value
 
-    def refresh_receiver_panel(self):
+    def refresh_receiver_panel(self, *args):
         if self.active_aggregator != None:
-            self.ids['mainzone_volume'].set_value(self.active_aggregator.yrx__volume)
-            self.ids['zone2_volume'].set_value(self.active_aggregator.yrx__volume2)
+
+            if self.active_aggregator.is_driver_present('yrx'):
+                self.ids['rxvolume_group'].disabled = False
+                self.ids['mainzone_volume'].set_value(self.active_aggregator.yrx__volume)
+                self.ids['zone2_volume'].set_value(self.active_aggregator.yrx__volume2)
+
+                self.ids['mainzone_volume'].disabled = not self.active_aggregator.yrx__main_on
+                self.ids['zone2_volume'].disabled = not self.active_aggregator.yrx__zone_on
+            else:
+                self.ids['rxvolume_group'].disabled = True
 
 class MainApp(App):
 
