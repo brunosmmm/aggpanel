@@ -17,7 +17,7 @@ class RXVolumeSlider(Slider, RootFinderMixin):
         self.min = -80.0
         self.step = 0.5
         self.announce = True
-        self.ack_pending = False
+        self.ack_pending = 0
 
     def _enable_announce(self, *args):
         self.announce = True
@@ -35,10 +35,11 @@ class RXVolumeSlider(Slider, RootFinderMixin):
         super(RXVolumeSlider, self).on_touch_up(touch)
         self.dragging = False
         self.find_root().rx_slider_changed(self.control_name, self.value)
-        self.ack_pending = True
+        self.ack_pending += 1
 
     def ack_change(self):
-        self.ack_pending = False
+        if self.ack_pending > 0:
+            self.ack_pending -= 1
 
     def on_value(self, *args, **kwargs):
         if self.manipulating_value == False:
@@ -46,12 +47,12 @@ class RXVolumeSlider(Slider, RootFinderMixin):
             if self.announce:
                 #flag root widget
                 self.find_root().rx_slider_changed(self.control_name, self.value)
-                self.ack_pending = True
+                self.ack_pending += 1
                 self._disable_announce()
 
     def set_value(self, value):
 
-        if self.dragging or self.ack_pending:
+        if self.dragging or self.ack_pending > 0:
             return
 
         self.manipulating_value = True
