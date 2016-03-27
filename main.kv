@@ -167,13 +167,19 @@
                     BoxLayout:
                         id: rxvolume_group
                         orientation: 'vertical'
-                        BoxLayout:
+                        GridLayout:
+                            cols: 2
                             size_hint: 1., 0.1
-                            orientation: 'horizontal'
                             Label:
                                 text: 'Main Zone'
                             Label:
                                 text: 'Zone 2'
+                            Label:
+                                id: main_current_in
+                                text: 'Input'
+                            Label:
+                                id: zone_current_in
+                                text: 'Input'
                         BoxLayout:
                             orientation: 'horizontal'
                             RXVolumeSlider:

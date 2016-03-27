@@ -191,7 +191,19 @@ class RootWidget(FloatLayout):
 
                 self.ids['mainzone_volume'].disabled = not self.active_aggregator.yrx__main_on
                 self.ids['zone2_volume'].disabled = not self.active_aggregator.yrx__zone_on
+
+                if self.active_aggregator.yrx__main_on:
+                    self.ids['main_current_in'].text = self.active_aggregator.yrx__main_input
+                else:
+                    self.ids['main_current_in'].text = 'OFF'
+
+                if self.active_aggregator.yrx__zone_on:
+                    self.ids['zone_current_in'].text = self.active_aggregator.yrx__zone_input
+                else:
+                    self.ids['zone_current_in'].text = 'OFF'
             else:
+                self.ids['main_current_in'].text = ''
+                self.ids['zone_current_in'].text = ''
                 self.ids['rxvolume_group'].disabled = True
 
 class MainApp(App):
