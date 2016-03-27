@@ -1,8 +1,12 @@
 from kivy.uix.gridlayout import GridLayout
 from ui.remotekey import RemoteKey
 from kivy.logger import Logger
+from kivy.properties import ObjectProperty
+from kivy.logger import Logger
 
 class KeyGrid(GridLayout):
+
+    remote_node = ObjectProperty('')
 
     def inhibit_children(self, state):
         for child_id in self.children:

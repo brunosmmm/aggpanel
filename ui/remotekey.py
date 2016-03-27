@@ -5,9 +5,9 @@ from kivy.logger import Logger
 
 class RemoteKey(Button):
 
-    bgup = ObjectProperty([0.,0.,0.])
-    bgdown = ObjectProperty([0.,0.,0.])
-    bgdis = ObjectProperty([0.,0.,0.])
+    bgup = ObjectProperty(None)
+    bgdown = ObjectProperty(None)
+    bgdis = ObjectProperty(None)
     remote_node = ObjectProperty('')
     remote_name = ObjectProperty('')
     key_name = ObjectProperty('')
@@ -24,9 +24,14 @@ class RemoteKey(Button):
         return root
 
     def hextorgb(self, h):
+        if h == None:
+            return None
         return tuple(float(int(h[i:i+2], 16))/255.0 for i in (0, 2 ,4))
 
     def set_bgcolor(self, color):
+        if color == None:
+            return
+
         has_img = False
         if self.ids['btnimg'].source != '':
             tex = self.ids['btnimg'].texture
