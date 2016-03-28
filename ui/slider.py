@@ -29,10 +29,18 @@ class RXVolumeSlider(Slider, RootFinderMixin):
 
     def on_touch_down(self, touch):
         super(RXVolumeSlider, self).on_touch_down(touch)
+
+        if self.disabled:
+            return
+
         self.dragging = True
 
     def on_touch_up(self, touch):
         super(RXVolumeSlider, self).on_touch_up(touch)
+
+        if self.disabled:
+            return
+
         self.dragging = False
         self.find_root().rx_slider_changed(self.control_name, self.value)
         self.ack_pending += 1
