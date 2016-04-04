@@ -21,6 +21,7 @@ from kivy.core.window import Window
 from ui.remotekey import RemoteKey, PanelToggleActionButton
 from ui.keygrid import KeyGrid
 from ui.slider import RXVolumeSlider
+from ui.sourcespinner import SourceSpinner
 import json
 import time
 
@@ -90,6 +91,7 @@ class RootWidget(FloatLayout):
         #misc, timers
         self.refresh_timer = None
         self.slider_change_delta = 0
+        self.stop_refreshing = False
 
     def _load_default_schemes(self):
         pass
@@ -208,12 +210,20 @@ class RootWidget(FloatLayout):
             self.set_main_input('OFF')
 
     def set_zone_input(self, value):
-        self.ids['zone_current_in'].text = value
+        self.ids['zone_current_in'].update_source(value)
 
     def set_main_input(self, value):
-        self.ids['main_current_in'].text = value
+        self.ids['main_current_in'].update_source(value)
+
+    def select_input(self, zone, input_name):
+        Logger.info('RECEIVER: setting zone {} input to {}'.format(zone, input_name))
+        ret = self.active_aggregator.set_module_property('yrx', '{}_input'.format(zone), input_name)
+        Logger.info('RECEIVER: got {}'.format(ret))
 
     def refresh_receiver_panel(self, *args):
+        if self.stop_refreshing:
+            return
+
         if self.active_aggregator != None:
             #non-blocking data retrieval
             if self.active_aggregator.is_driver_present('yrx'):
