@@ -139,6 +139,7 @@ class RootWidget(FloatLayout):
                 self.ids[panel_id].disabled = True
 
         self.active_aggregator = aggregator
+        self.refresh_receiver_panel()
 
     def execute_action(self, action_name):
         self.userman.execute_action(action_name)
@@ -234,6 +235,7 @@ class RootWidget(FloatLayout):
                 self.active_aggregator.get_module_property('yrx', 'main_on', block=False, callback=self.set_main_volume_state)
                 self.active_aggregator.get_module_property('yrx', 'zone_on', block=False, callback=self.set_zone_volume_state)
             else:
+                Logger.info('RECEIVER: module yrx not present')
                 self.ids['main_current_in'].text = ''
                 self.ids['zone_current_in'].text = ''
                 self.ids['rxvolume_group'].disabled = True
