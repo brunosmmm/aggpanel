@@ -1,298 +1,335 @@
 
 <RootWidget>:
-    TabbedPanel:
-        do_default_tab: False
-        on_current_tab: root.tab_selected(self.current_tab)
-        TabbedPanelItem:
-            text: 'Controls'
-            FloatLayout:
-                id: ctrl_panel
-                disabled: True
-                canvas.before:
-                    Color:
-                        rgb: (1.,1.,1.)
-                BoxLayout:
-                    orientation: 'horizontal'
-                    spacing: 10
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 2
+        StackLayout:
+            id: screen_select
+            orientation: 'lr-tb'
+            size_hint: 1., 0.1
+            spacing: 2
+            ToggleButton:
+                #default button
+                size_hint: 0.165, 1.
+                state: 'down'
+                allow_no_selection: False
+                group: 'screen_sel'
+                text: 'Controls'
+                on_press: screen_manager.current = 'Controls'
+            ToggleButton:
+                allow_no_selection: False
+                size_hint: 0.165, 1.
+                group: 'screen_sel'
+                text: 'Bluray'
+                on_press: screen_manager.current = 'Bluray'
+            ToggleButton:
+                allow_no_selection: False
+                size_hint: 0.165, 1.
+                group: 'screen_sel'
+                text: 'Receiver'
+                on_press: screen_manager.current = 'Receiver'
+            ToggleButton:
+                allow_no_selection: False
+                size_hint: 0.165, 1.
+                group: 'screen_sel'
+                text: 'Activity List'
+                on_press: screen_manager.current = 'ActivityList'
+        ScreenManager:
+            id: screen_manager
+            Screen:
+                on_enter: root.enter_screen(self.name)
+                name: 'Controls'
+                FloatLayout:
+                    id: ctrl_panel
+                    disabled: True
+                    canvas.before:
+                        Color:
+                            rgb: (1.,1.,1.)
                     BoxLayout:
-                        size_hint: 0.2, 1
-                        orientation: 'vertical'
-                        spacing: 5
-                        KeyGrid:
-                            id: ctrlscheme_group
-                            size_hint: 1., 0.2
-                            cols: 3
-                            spacing: 5
-                            KeyCD:
-                                load_scheme: 'bdscheme'
-                            KeyTV:
-                                load_scheme: 'tvscheme'
-                            KeyPC:
-                                load_scheme: 'pcscheme'
-                        KeyGrid:
-                            id: numericctrl_group
-                            cols: 3
-                            spacing: 5
-                            remote_node: ''
-                            remote_name: ''
-                            Key1:
-                                id: num_1
-                            Key2:
-                                id: num_2
-                            Key3:
-                                id: num_3
-                            Key4:
-                                id: num_4
-                            Key5:
-                                id: num_5
-                            Key6:
-                                id: num_6
-                            Key7:
-                                id: num_7
-                            Key8:
-                                id: num_8
-                            Key9:
-                                id: num_9
-                            Widget:
-                            Key0:
-                                id: num_0
-                            Widget:
-                        KeyGrid:
-                            id: volctrl_group
-                            size_hint: 1., 0.25
-                            cols: 3
-                            spacing: 5
-                            KeyVolUp:
-                                id: keyvolup
-                            KeyVolDn:
-                                id: keyvoldn
-                            KeyMute:
-                                id: keymute
-
-                    BoxLayout:
-                        size_hint: 0.2, 1
-                        orientation: 'vertical'
-                        KeyGrid:
-                            id: mediactrl_group
-                            cols: 3
-                            spacing: 5
-                            Widget:
-                            Widget:
-                            KeyPower:
-                                id: keypower
-                            KeyBack:
-                                id: keyback
-                            KeyUp:
-                                id: keyup
-                            KeyHome:
-                                id: keyhome
-                            KeyLeft:
-                                id: keyleft
-                            KeyOK:
-                                id: keyok
-                            KeyRight:
-                                id: keyright
-                            KeyRefreshBack:
-                                id: keyexit
-                            KeyDown:
-                                id: keydown
-                            KeyMenu:
-                                id: keymenu
-                            KeyRewind:
-                                id: keyrew
-                            KeyPlay:
-                                id: keyplay
-                            KeyFastForward:
-                                id: keyff
-                            KeyPrev:
-                                id: keyprev
-                            KeyStop:
-                                id: keystop
-                            KeyNext:
-                                id: keynext
-
-        
-        TabbedPanelItem:
-            text: 'Bluray'
-            FloatLayout:
-                id: bluray_panel
-                disabled: True
-                BoxLayout:
-                    orientation: 'horizontal'
-                    KeyGrid:
-                        id: blurayctrl_group
-                        cols: 4
-                        remote_node: 'carbon'
-                        KeyEject:
-                            remote_node: 'carbon'
-                            remote_name: 'AK59'
-                            key_name: 'KEY_EJECTCLOSECD'
-                        KeyAudio:
-                            remote_node: 'carbon'
-                            remote_name: 'AK59'
-                            key_name: 'KEY_AUDIO'
-                        KeyText:
-                            remote_node: 'carbon'
-                            remote_name: 'AK59'
-                            key_name: 'KEY_SUBTITLE'
-                        KeyInfo:
-                            remote_node: 'carbon'
-                            remote_name: 'AK59'
-                            key_name: 'KEY_INFO'
-                        KeyBlankA:
-                            remote_node: 'carbon'
-                            remote_name: 'AK59'
-                            key_name: 'KEY_A'
-                        KeyBlankB:
-                            remote_node: 'carbon'
-                            remote_name: 'AK59'
-                            key_name: 'KEY_B'
-                        KeyBlankC:
-                            remote_node: 'carbon'
-                            remote_name: 'AK59'
-                            key_name: 'KEY_C'
-                        KeyBlankD:
-                            remote_node: 'carbon'
-                            remote_name: 'AK59'
-                            key_name: 'KEY_D'
-
-        TabbedPanelItem:
-            id: receiver_tab
-            text: 'Receiver'
-            FloatLayout:
-                id: receiver_panel
-                disabled: True
-                BoxLayout:
-                    orientation: 'horizontal'
-                    BoxLayout:
-                        id: rxvolume_group
-                        orientation: 'vertical'
-                        GridLayout:
-                            cols: 2
-                            size_hint: 1., 0.1
-                            Label:
-                                text: 'Main Zone'
-                            Label:
-                                text: 'Zone 2'
-                            SourceSpinner:
-                                id: main_current_in
-                                zone: 'main'
-                            SourceSpinner:
-                                id: zone_current_in
-                                zone: 'zone'
+                        orientation: 'horizontal'
+                        spacing: 10
                         BoxLayout:
-                            orientation: 'horizontal'
-                            RXVolumeSlider:
-                                id: mainzone_volume
-                                control_name: 'main'
-                                orientation: 'vertical'
-                            RXVolumeSlider:
-                                id: zone2_volume
-                                control_name: 'zone2'
-                                orientation: 'vertical'
+                            size_hint: 0.2, 1
+                            orientation: 'vertical'
+                            spacing: 5
+                            KeyGrid:
+                                id: ctrlscheme_group
+                                size_hint: 1., 0.2
+                                cols: 3
+                                spacing: 5
+                                KeyCD:
+                                    load_scheme: 'bdscheme'
+                                KeyTV:
+                                    load_scheme: 'tvscheme'
+                                KeyPC:
+                                    load_scheme: 'pcscheme'
+                            KeyGrid:
+                                id: numericctrl_group
+                                cols: 3
+                                spacing: 5
+                                remote_node: ''
+                                remote_name: ''
+                                Key1:
+                                    id: num_1
+                                Key2:
+                                    id: num_2
+                                Key3:
+                                    id: num_3
+                                Key4:
+                                    id: num_4
+                                Key5:
+                                    id: num_5
+                                Key6:
+                                    id: num_6
+                                Key7:
+                                    id: num_7
+                                Key8:
+                                    id: num_8
+                                Key9:
+                                    id: num_9
+                                Widget:
+                                Key0:
+                                    id: num_0
+                                Widget:
+                            KeyGrid:
+                                id: volctrl_group
+                                size_hint: 1., 0.25
+                                cols: 3
+                                spacing: 5
+                                KeyVolUp:
+                                    id: keyvolup
+                                KeyVolDn:
+                                    id: keyvoldn
+                                KeyMute:
+                                    id: keymute
+
+                        BoxLayout:
+                            size_hint: 0.2, 1
+                            orientation: 'vertical'
+                            KeyGrid:
+                                id: mediactrl_group
+                                cols: 3
+                                spacing: 5
+                                Widget:
+                                Widget:
+                                KeyPower:
+                                    id: keypower
+                                KeyBack:
+                                    id: keyback
+                                KeyUp:
+                                    id: keyup
+                                KeyHome:
+                                    id: keyhome
+                                KeyLeft:
+                                    id: keyleft
+                                KeyOK:
+                                    id: keyok
+                                KeyRight:
+                                    id: keyright
+                                KeyRefreshBack:
+                                    id: keyexit
+                                KeyDown:
+                                    id: keydown
+                                KeyMenu:
+                                    id: keymenu
+                                KeyRewind:
+                                    id: keyrew
+                                KeyPlay:
+                                    id: keyplay
+                                KeyFastForward:
+                                    id: keyff
+                                KeyPrev:
+                                    id: keyprev
+                                KeyStop:
+                                    id: keystop
+                                KeyNext:
+                                    id: keynext
+
+
+            Screen:
+                on_enter: root.enter_screen(self.name)
+                name: 'Bluray'
+                FloatLayout:
+                    id: bluray_panel
+                    disabled: True
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        KeyGrid:
+                            id: blurayctrl_group
+                            cols: 4
+                            remote_node: 'carbon'
+                            KeyEject:
+                                remote_node: 'carbon'
+                                remote_name: 'AK59'
+                                key_name: 'KEY_EJECTCLOSECD'
+                            KeyAudio:
+                                remote_node: 'carbon'
+                                remote_name: 'AK59'
+                                key_name: 'KEY_AUDIO'
+                            KeyText:
+                                remote_node: 'carbon'
+                                remote_name: 'AK59'
+                                key_name: 'KEY_SUBTITLE'
+                            KeyInfo:
+                                remote_node: 'carbon'
+                                remote_name: 'AK59'
+                                key_name: 'KEY_INFO'
+                            KeyBlankA:
+                                remote_node: 'carbon'
+                                remote_name: 'AK59'
+                                key_name: 'KEY_A'
+                            KeyBlankB:
+                                remote_node: 'carbon'
+                                remote_name: 'AK59'
+                                key_name: 'KEY_B'
+                            KeyBlankC:
+                                remote_node: 'carbon'
+                                remote_name: 'AK59'
+                                key_name: 'KEY_C'
+                            KeyBlankD:
+                                remote_node: 'carbon'
+                                remote_name: 'AK59'
+                                key_name: 'KEY_D'
+
+            Screen:
+                id: receiver_tab
+                name: 'Receiver'
+                on_enter: root.enter_screen(self.name)
+                FloatLayout:
+                    id: receiver_panel
+                    disabled: True
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        BoxLayout:
+                            id: rxvolume_group
+                            orientation: 'vertical'
+                            GridLayout:
+                                cols: 2
+                                size_hint: 1., 0.1
+                                Label:
+                                    text: 'Main Zone'
+                                Label:
+                                    text: 'Zone 2'
+                                SourceSpinner:
+                                    id: main_current_in
+                                    zone: 'main'
+                                SourceSpinner:
+                                    id: zone_current_in
+                                    zone: 'zone'
+                            BoxLayout:
+                                orientation: 'horizontal'
+                                RXVolumeSlider:
+                                    id: mainzone_volume
+                                    control_name: 'main'
+                                    orientation: 'vertical'
+                                RXVolumeSlider:
+                                    id: zone2_volume
+                                    control_name: 'zone2'
+                                    orientation: 'vertical'
+                        BoxLayout:
+                            orientation: 'vertical'
+                            spacing: 5
+                            KeyGrid:
+                                id: rxzonesel_group
+                                size_hint: 1., 0.2
+                                cols: 4
+                                spacing: 5
+                                PanelToggleActionButton:
+                                    id: rx_mainzone
+                                    allow_no_selection: False
+                                    text: 'Main Zone'
+                                    group: 'rx_zone_group'
+                                    state: 'down'
+                                    load_scheme: 'rxmain'
+                                PanelToggleActionButton:
+                                    allow_no_selection: False
+                                    id: rx_zone2
+                                    text: 'Zone 2'
+                                    group: 'rx_zone_group'
+                                    load_scheme: 'rxzone'
+                                Widget:
+                                RemoteKey:
+                                    id: rx_zonepower
+                                    text: 'Power'
+                            KeyGrid:
+                                id: receiver_group
+                                cols: 4
+                                spacing: 5
+                                RemoteKey:
+                                    id: rx_hdmi_1
+                                    text: 'HDMI 1'
+                                RemoteKey:
+                                    id: rx_hdmi_2
+                                    text: 'HDMI 2'
+                                RemoteKey:
+                                    id: rx_hdmi_3
+                                    text: 'HDMI 3'
+                                RemoteKey:
+                                    id: rx_hdmi_4
+                                    text: 'HDMI 4'
+                                RemoteKey:
+                                    id: rx_hdmi_5
+                                    text: 'HDMI 5'
+                                RemoteKey:
+                                    id: rx_hdmi_6
+                                    text: 'HDMI 6'
+                                RemoteKey:
+                                    id: rx_hdmi_7
+                                    text: 'HDMI 7'
+                                RemoteKey:
+                                    id: rx_vaux
+                                    text: 'V-AUX'
+                                RemoteKey:
+                                    id: rx_av_1
+                                    text: 'AV 1'
+                                RemoteKey:
+                                    id: rx_av_2
+                                    text: 'AV 2'
+                                RemoteKey:
+                                    id: rx_av_3
+                                    text: 'AV 3'
+                                RemoteKey:
+                                    id: rx_av_4
+                                    text: 'AV 4'
+                                RemoteKey:
+                                    id: rx_av_5
+                                    text: 'AV 5'
+                                RemoteKey:
+                                    id: rx_av_6
+                                    text: 'AV 6'
+                                RemoteKey:
+                                    id: rx_audio_1
+                                    text: 'AUDIO 1'
+                                RemoteKey:
+                                    id: rx_audio_2
+                                    text: 'AUDIO 2'
+                                RemoteKey:
+                                    id: rx_tuner
+                                    text: 'TUNER'
+                                RemoteKey:
+                                    id: rx_usb
+                                    text: 'USB'
+                                RemoteKey:
+                                    id: rx_net
+                                    text: 'NET'
+                                RemoteKey:
+                                    id: rx_party
+                                    text: 'PARTY'
+
+            Screen:
+                on_enter: root.enter_screen(self.name)
+                name: 'ActivityList'
+                FloatLayout:
+                    id: action_panel
+                    disabled: True
                     BoxLayout:
                         orientation: 'vertical'
-                        spacing: 5
-                        KeyGrid:
-                            id: rxzonesel_group
-                            size_hint: 1., 0.2
-                            cols: 4
-                            spacing: 5
-                            PanelToggleActionButton:
-                                id: rx_mainzone
-                                allow_no_selection: False
-                                text: 'Main Zone'
-                                group: 'rx_zone_group'
-                                state: 'down'
-                                load_scheme: 'rxmain'
-                            PanelToggleActionButton:
-                                allow_no_selection: False
-                                id: rx_zone2
-                                text: 'Zone 2'
-                                group: 'rx_zone_group'
-                                load_scheme: 'rxzone'
-                            Widget:
-                            RemoteKey:
-                                id: rx_zonepower
-                                text: 'Power'
-                        KeyGrid:
-                            id: receiver_group
-                            cols: 4
-                            spacing: 5
-                            RemoteKey:
-                                id: rx_hdmi_1
-                                text: 'HDMI 1'
-                            RemoteKey:
-                                id: rx_hdmi_2
-                                text: 'HDMI 2'
-                            RemoteKey:
-                                id: rx_hdmi_3
-                                text: 'HDMI 3'
-                            RemoteKey:
-                                id: rx_hdmi_4
-                                text: 'HDMI 4'
-                            RemoteKey:
-                                id: rx_hdmi_5
-                                text: 'HDMI 5'
-                            RemoteKey:
-                                id: rx_hdmi_6
-                                text: 'HDMI 6'
-                            RemoteKey:
-                                id: rx_hdmi_7
-                                text: 'HDMI 7'
-                            RemoteKey:
-                                id: rx_vaux
-                                text: 'V-AUX'
-                            RemoteKey:
-                                id: rx_av_1
-                                text: 'AV 1'
-                            RemoteKey:
-                                id: rx_av_2
-                                text: 'AV 2'
-                            RemoteKey:
-                                id: rx_av_3
-                                text: 'AV 3'
-                            RemoteKey:
-                                id: rx_av_4
-                                text: 'AV 4'
-                            RemoteKey:
-                                id: rx_av_5
-                                text: 'AV 5'
-                            RemoteKey:
-                                id: rx_av_6
-                                text: 'AV 6'
-                            RemoteKey:
-                                id: rx_audio_1
-                                text: 'AUDIO 1'
-                            RemoteKey:
-                                id: rx_audio_2
-                                text: 'AUDIO 2'
-                            RemoteKey:
-                                id: rx_tuner
-                                text: 'TUNER'
-                            RemoteKey:
-                                id: rx_usb
-                                text: 'USB'
-                            RemoteKey:
-                                id: rx_net
-                                text: 'NET'
-                            RemoteKey:
-                                id: rx_party
-                                text: 'PARTY'
-        
-        TabbedPanelItem:
-            text: 'Activity List'
-            FloatLayout:
-                id: action_panel
-                disabled: True
-                BoxLayout:
-                    orientation: 'vertical'
-                    Button:
-                        text: 'Watch TV'
-                        on_press: root.execute_action('watchtv')
-                    Button:
-                        text: 'PC Audio'
-                        on_press: root.execute_action('pcaudio')
-                    Button:
-                        text: 'Watch Blu-ray/DVD'
-                        on_press: root.execute_action('watchbd')
+                        Button:
+                            text: 'Watch TV'
+                            on_press: root.execute_action('watchtv')
+                        Button:
+                            text: 'PC Audio'
+                            on_press: root.execute_action('pcaudio')
+                        Button:
+                            text: 'Watch Blu-ray/DVD'
+                            on_press: root.execute_action('watchbd')

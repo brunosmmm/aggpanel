@@ -173,8 +173,8 @@ class RootWidget(FloatLayout):
         else:
             self.userman.apply_button_scheme(scheme_name)
 
-    def tab_selected(self, tab):
-        if tab == self.ids['receiver_tab']:
+    def enter_screen(self, screen_name):
+        if screen_name == 'Receiver':
             self.refresh_receiver_panel()
             self.refresh_timer = Clock.schedule_interval(self.refresh_receiver_panel, 1.0)
         else:
