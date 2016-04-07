@@ -2,8 +2,32 @@ from kivy.logger import Logger
 from jnius import autoclass, PythonJavaClass, java_method
 from collections import deque
 
+class AndroidResolver(PythonJavaClass):
+    __javainterfaces__ = ['android/net/nsd/NsdManager$ResolveListener']
+
+    def __init__(self, service_found_cb=None):
+        super(AndroidResolver, self).__init__()
+
+        self.cb_found = service_found_cb
+
+    @java_method('(Landroid/net/nsd/NsdServiceInfo;I)V')
+    def onResolveFailed(self, service_info, error_code):
+        Logger.info('android-listen: resolve failed for "{}" with error code {}'.format(service_info.toString(), error_code))
+
+    @java_method('(Landroid/net/nsd/NsdServiceInfo;)V')
+    def onServiceResolved(self, service_info):
+        Logger.info('android-listen: service resolved: {}'.format(service_info.toString()))
+
+        #annoying escaped characters and annoying forward-slash address
+        #dont pass attributes for now
+        if self.cb_found:
+            self.cb_found(address=service_info.getHost().toString()[1::],
+                          port=service_info.getPort(),
+                          name=service_info.getServiceName(),
+                          attr=[])
+
 class AndroidListener(PythonJavaClass):
-    __javainterfaces__ = ['android/net/nsd/NsdManager$DiscoveryListener', 'android/net/nsd/NsdManager$ResolveListener']
+    __javainterfaces__ = ['android/net/nsd/NsdManager$DiscoveryListener']
     def __init__(self, service_type, android_context, service_found_cb=None, service_removed_cb=None):
 
         super(AndroidListener, self).__init__()
@@ -22,6 +46,7 @@ class AndroidListener(PythonJavaClass):
 
         self.is_stopped = True
         self.startstop_failed = False
+        self.resolving = False
 
     def start_listening(self):
         self.nsd_mgr.discoverServices('_http._tcp', self.NsdManager.PROTOCOL_DNS_SD, self)
@@ -37,8 +62,10 @@ class AndroidListener(PythonJavaClass):
     def discover_loop(self, *args):
         #resolve pending
         if len(self.to_resolve) > 0:
+            Logger.info('android-listen: resolving queued service')
             service = self.to_resolve.popleft()
-            self.nsd_mgr.resolveService(service, self)
+            self.nsd_mgr.resolveService(service,
+                                        AndroidResolver(self.cb_found))
 
 
     @java_method('(Ljava/lang/String;I)V')
@@ -74,19 +101,3 @@ class AndroidListener(PythonJavaClass):
         self.is_stopped = False
         self.startstop_failed = False
         Logger.info('android-listen: discovery started for service type "{}"'.format(service_type))
-
-    @java_method('(Landroid/net/nsd/NsdServiceInfo;I)V')
-    def onResolveFailed(self, service_info, error_code):
-        Logger.info('android-listen: resolve failed for "{}" with error code {}'.format(service_info.toString(), error_code))
-
-    @java_method('(Landroid/net/nsd/NsdServiceInfo;)V')
-    def onServiceResolved(self, service_info):
-        Logger.info('android-listen: service resolved: {}'.format(service_info.toString()))
-
-        #annoying escaped characters and annoying forward-slash address
-        #dont pass attributes for now
-        if self.cb_found:
-            self.cb_found(address=service_info.getHost().toString()[1::],
-                          port=service_info.getPort(),
-                          name=service_info.getServiceName(),
-                          attr=[])
