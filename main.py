@@ -1,9 +1,6 @@
 import kivy
 kivy.require('1.9.1')
 from kivy.config import Config
-Config.set('graphics', 'width', '1024')
-Config.set('graphics', 'height', '600')
-Config.set('graphics', 'resizable', '1')
 from kivy.properties import ObjectProperty
 from kivy.logger import Logger
 from kivy.uix.tabbedpanel import TabbedPanel
@@ -18,6 +15,7 @@ from userman import UserConfigManager
 from collections import deque
 from kivy.clock import Clock
 from kivy.core.window import Window
+from kivy.uix.screenmanager import FadeTransition
 from ui.remotekey import RemoteKey, PanelToggleActionButton
 from ui.keygrid import KeyGrid
 from ui.slider import RXVolumeSlider
@@ -95,6 +93,7 @@ class RootWidget(FloatLayout):
         self.refresh_timer = None
         self.slider_change_delta = 0
         self.stop_refreshing = False
+        self.ids['screen_manager'].transition = FadeTransition()
 
     def _load_default_schemes(self):
         pass
@@ -259,7 +258,6 @@ class MainApp(App):
         return self.app
 
     def run(self, *args, **kwargs):
-        Window.size = (1024, 600)
         super(MainApp, self).run(*args, **kwargs)
         self.listener.stop_listening()
 
