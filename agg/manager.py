@@ -7,6 +7,7 @@ import time
 
 #compensate unknown android weirdness
 AGGREGATOR_REGEX = re.compile(r'^PeriodicPi(\s|\\032)Aggregator(\s|\\032)\[([a-zA-Z0-9]+)\]')
+IPV6_REGEX = re.compile(r'[0-9a-fA-F]{0,4}::(([0-9a-fA-F]{0,4}):){3}[0-9a-fA-F]{0,4}')
 
 class AggManager(object):
     def __init__(self, address, port, attr, element):
@@ -19,6 +20,8 @@ class AggManager(object):
 
         #make client
         Logger.info('agg-{}: connecting at {}:{}'.format(self.agg_element, self.agg_addr, self.agg_port))
+        if IPV6_REGEX.match(self.agg_addr) != None:
+            self.agg_addr = '[{}]'.format(self.agg_addr)
         self.client = pyjsonrpc.HttpClient(url='http://{}:{}/'.format(self.agg_addr, self.agg_port))
 
         #get information
