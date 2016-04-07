@@ -52,6 +52,11 @@ class AndroidListener(PythonJavaClass):
         self.nsd_mgr.discoverServices('_http._tcp', self.NsdManager.PROTOCOL_DNS_SD, self)
 
     def stop_listening(self, block=False):
+        if self.is_stopped:
+            # already stopped!
+            return
+
+        # try to stop
         self.nsd_mgr.stopServiceDiscovery(self)
 
         if block:
