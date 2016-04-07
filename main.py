@@ -1,8 +1,8 @@
 import kivy
 kivy.require('1.9.1')
 from kivy.config import Config
-Config.set('graphics', 'width', '1280')
-Config.set('graphics', 'height', '720')
+Config.set('graphics', 'width', '1024')
+Config.set('graphics', 'height', '600')
 Config.set('graphics', 'resizable', '0')
 from kivy.properties import ObjectProperty
 from kivy.logger import Logger
@@ -69,7 +69,7 @@ class RootWidget(FloatLayout):
 
     _panel_list = ['bluray_panel', 'ctrl_panel', 'action_panel', 'receiver_panel']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, listener, *args, **kwargs):
         super(RootWidget, self).__init__(*args, **kwargs)
         self.active_aggregator = None
         self.act_queue = deque()
@@ -84,6 +84,9 @@ class RootWidget(FloatLayout):
         self.userman.register_action_hook('set_rx_volume', self._action_set_volume)
         self.userman.register_action_hook('wait', self._insert_wait)
         Clock.schedule_interval(self._check_action_queue, 0.1)
+
+        #get listener object
+        self.listener = listener
 
         #scan user files
         self.userman.scan_files()
@@ -133,6 +136,8 @@ class RootWidget(FloatLayout):
     def set_active_aggregator(self, aggregator):
         for panel_id in self._panel_list:
             if aggregator != None:
+                #deactivate listener for now
+                self.listener.stop_listening()
                 self.ids[panel_id].disabled = False
                 self.activate_button_configuration(None)
             else:
@@ -249,12 +254,12 @@ class MainApp(App):
         self.aggregators = {}
 
     def build(self):
-        self.app = RootWidget()
+        self.app = RootWidget(self.listener)
         self.listener.start_listening()
         return self.app
 
     def run(self, *args, **kwargs):
-        Window.size = (1280, 720)
+        Window.size = (1024, 600)
         super(MainApp, self).run(*args, **kwargs)
         self.listener.stop_listening()
 
