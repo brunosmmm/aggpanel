@@ -59,6 +59,7 @@ class RemoteKey(Button, PanelActionBehavior):
             img_size = [self.size[0], self.size[0]]
 
         img_pos = [self.pos[0] + (self.size[0]/2 - img_size[0]/2), self.pos[1]+ (self.size[1]/2 - img_size[1]/2)]
+        self.canvas.clear()
         with self.canvas:
             Color(rgb=color)
             RoundedRectangle(size=self.size, pos=self.pos)
@@ -82,6 +83,8 @@ class RemoteKey(Button, PanelActionBehavior):
 
         kwargs.update({'root_widget_class' : 'RootWidget'})
         super(RemoteKey, self).__init__(*args, **kwargs)
+
+        self.bind(size=self.redraw)
 
     def __setattr__(self, attr, value):
         super(RemoteKey, self).__setattr__(attr, value)
@@ -127,3 +130,12 @@ class RemoteKey(Button, PanelActionBehavior):
             self.set_bgcolor(self.hextorgb(self.bgdis))
         else:
             self.set_bgcolor(self.hextorgb(self.bgup))
+
+    def redraw(self, *args):
+        if self.disabled:
+            self.set_bgcolor(self.hextorgb(self.bgdis))
+        else:
+            if self.state == 'down':
+                self.set_bgcolor(self.hextorgb(self.bgdown))
+            else:
+                self.set_bgcolor(self.hextorgb(self.bgup))
