@@ -3,7 +3,7 @@ kivy.require('1.9.1')
 from kivy.config import Config
 Config.set('graphics', 'width', '1024')
 Config.set('graphics', 'height', '600')
-Config.set('graphics', 'resizable', '0')
+Config.set('graphics', 'resizable', '1')
 from kivy.properties import ObjectProperty
 from kivy.logger import Logger
 from kivy.uix.tabbedpanel import TabbedPanel
