@@ -1,7 +1,7 @@
 [app]
 
 # (str) Title of your application
-title = Aggregator Control Panel
+title = Aggregate Panel
 
 # (str) Package name
 package.name = aggpanel
@@ -46,7 +46,7 @@ requirements = kivy,bunch,zeroconf
 #presplash.filename = %(source.dir)s/data/presplash.png
 
 # (str) Icon of the application
-#icon.filename = %(source.dir)s/data/icon.png
+icon.filename = %(source.dir)s/img/agg.png
 
 # (str) Supported orientation (one of landscape, portrait or all)
 orientation = landscape
