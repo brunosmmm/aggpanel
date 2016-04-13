@@ -254,6 +254,8 @@ class MainApp(App):
 
     def build(self):
         self.app = RootWidget(self.listener)
+        self.title = 'Aggregate Panel'
+        self.icon = 'img/agg.png'
         self.listener.start_listening()
         return self.app
 
